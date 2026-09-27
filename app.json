@@ -26,10 +26,5 @@
     "navigationBarBackgroundColor": "#ffffff",
     "navigationBarTextStyle": "black",
     "backgroundColor": "#ffffff"
-  },
-  "permission": {
-    "scope.record": {
-      "desc": "用于录制家人读字的声音"
-    }
   }
 }

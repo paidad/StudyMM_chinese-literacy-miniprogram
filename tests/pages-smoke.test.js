@@ -3,6 +3,17 @@ var fs = require('fs');
 var path = require('path');
 var storageMemory = {};
 
+var appConfig = require('../app.json');
+var registeredPages = appConfig.pages.concat(appConfig.subpackages.reduce(function (result, subpackage) {
+  return result.concat(subpackage.pages.map(function (pagePath) {
+    return subpackage.root + '/' + pagePath;
+  }));
+}, []));
+assert.strictEqual(appConfig.permission, undefined, 'record permission must be requested at runtime, not declared in app.json');
+registeredPages.forEach(function (pagePath) {
+  assert.ok(fs.existsSync(path.join(__dirname, '..', pagePath + '.json')), pagePath + '.json must exist');
+});
+
 global.setTimeout = function () {
   return { fake: true };
 };
