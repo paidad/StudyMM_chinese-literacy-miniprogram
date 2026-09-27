@@ -1,0 +1,120 @@
+.write-page {
+  height: 100vh;
+  overflow: hidden;
+  box-sizing: border-box;
+  padding: 20rpx 28rpx 54rpx;
+  background: #fffaf0;
+  text-align: center;
+}
+
+.write-title,
+.write-status {
+  display: block;
+}
+
+.write-title {
+  font-size: 48rpx;
+  font-weight: bold;
+}
+
+.write-status {
+  min-height: 54rpx;
+  margin-top: 12rpx;
+  font-size: 34rpx;
+  line-height: 1.5;
+  color: #6f2a09;
+}
+
+.reference-box {
+  width: 600rpx;
+  height: 600rpx;
+  margin: 10rpx auto 0;
+  border: 4rpx solid #333333;
+  background: #ffffff;
+  box-sizing: border-box;
+}
+
+.reference-canvas {
+  width: 100%;
+  height: 100%;
+}
+
+.reference-box-small {
+  width: 210rpx;
+  height: 210rpx;
+}
+
+.write-button {
+  min-height: 116rpx;
+  margin-top: 12rpx;
+  border-radius: 22rpx;
+  font-size: 38rpx;
+  font-weight: bold;
+  line-height: 116rpx;
+}
+
+.primary {
+  color: #ffffff;
+  background: #a63e0c;
+}
+
+.secondary {
+  border: 4rpx solid #6f2a09;
+  color: #6f2a09;
+  background: #ffffff;
+}
+
+.trace-mode-button {
+  border: 4rpx solid #8a3d1a;
+  color: #8a3d1a;
+  background: #fffdf8;
+}
+
+.trace-box {
+  width: 700rpx;
+  height: 700rpx;
+  margin: 10rpx auto 0;
+  border: 4rpx solid #333333;
+  box-sizing: border-box;
+  background: #ffffff;
+}
+
+.trace-canvas {
+  width: 100%;
+  height: 100%;
+}
+
+.trace-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10rpx;
+}
+
+.trace-action {
+  width: 48.5%;
+  min-height: 108rpx;
+  margin: 0;
+  border-radius: 22rpx;
+  font-size: 36rpx;
+  font-weight: bold;
+  line-height: 108rpx;
+}
+
+.erase-action {
+  color: #ffffff;
+  background: #b9472c;
+}
+
+.done-action {
+  border: 4rpx solid #39704d;
+  color: #39704d;
+  background: #fffdf8;
+}
+
+.pressed {
+  opacity: 0.65;
+}
+
+button::after {
+  border: 0;
+}

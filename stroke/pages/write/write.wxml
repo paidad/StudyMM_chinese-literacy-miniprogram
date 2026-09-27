@@ -1,0 +1,17 @@
+<view class="write-page">
+  <text class="write-title">看“{{char}}”怎么写</text>
+  <text class="write-status">{{status}}</text>
+
+  <view class="reference-box {{showTrace ? 'reference-box-small' : ''}}">
+    <canvas id="strokeCanvasView" canvas-id="strokeCanvas" class="reference-canvas" style="width: 100%; height: 100%;" bindtap="onReferenceTap"></canvas>
+  </view>
+  <button wx:if="{{!showTrace}}" class="write-button primary" bindtap="onReplayTap" hover-class="pressed">再放一遍</button>
+  <button wx:if="{{!showTrace}}" class="write-button trace-mode-button" bindtap="onTraceModeTap" hover-class="pressed">我也写一遍</button>
+  <view class="trace-box" hidden="{{!showTrace}}">
+    <canvas id="traceCanvasView" canvas-id="traceCanvas" class="trace-canvas" style="width: 100%; height: 100%;" disable-scroll="true" bindtouchstart="onTraceStart" bindtouchmove="onTraceMove" bindtouchend="onTraceEnd" bindtouchcancel="onTraceEnd"></canvas>
+  </view>
+  <view wx:if="{{showTrace}}" class="trace-actions">
+    <button class="trace-action erase-action" bindtap="onEraseTap" hover-class="pressed">擦掉重写</button>
+    <button class="trace-action done-action" bindtap="onDoneTap" hover-class="pressed">写好了</button>
+  </view>
+</view>

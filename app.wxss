@@ -1,0 +1,109 @@
+page {
+  height: 100%;
+  overflow: hidden;
+  background: #ffffff;
+  color: #111111;
+}
+
+.simple-page {
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding: 56rpx 36rpx 36rpx;
+  background: #fffaf0;
+  text-align: center;
+}
+
+.simple-title {
+  display: block;
+  font-size: 56rpx;
+  font-weight: bold;
+  line-height: 1.4;
+  color: #222222;
+}
+
+.simple-card {
+  margin-top: 40rpx;
+  padding: 52rpx 32rpx;
+  border: 4rpx solid #222222;
+  border-radius: 28rpx;
+  background: #ffffff;
+}
+
+.simple-message {
+  display: block;
+  font-size: 44rpx;
+  font-weight: bold;
+  line-height: 1.5;
+}
+
+.simple-help,
+.route-notice {
+  display: block;
+  margin-top: 18rpx;
+  font-size: 36rpx;
+  line-height: 1.5;
+  color: #555555;
+}
+
+.simple-button {
+  min-height: 120rpx;
+  margin-top: 36rpx;
+  border-radius: 24rpx;
+  color: #ffffff;
+  background: #a63e0c;
+  font-size: 40rpx;
+  font-weight: bold;
+  line-height: 120rpx;
+}
+
+.simple-button::after {
+  border: 0;
+}
+
+.simple-button-pressed {
+  opacity: 0.7;
+}
+
+.shared-nav {
+  display: flex;
+  position: fixed;
+  z-index: 20;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 108rpx;
+  margin-top: 0;
+  border-top: 2rpx solid #c9bda9;
+  border-bottom: 2rpx solid #c9bda9;
+  background: #ffffff;
+}
+
+.shared-nav-item {
+  flex: 1;
+  min-height: 108rpx;
+  padding: 14rpx 0 10rpx;
+  box-sizing: border-box;
+  color: #555555;
+}
+
+.shared-nav-current {
+  color: #8a330a;
+  background: #f7ead5;
+}
+
+.shared-nav-pressed {
+  opacity: 0.6;
+}
+
+.shared-nav-mark {
+  display: block;
+  font-size: 30rpx;
+  line-height: 1;
+}
+
+.shared-nav-label {
+  display: block;
+  margin-top: 8rpx;
+  font-size: 32rpx;
+  line-height: 1.4;
+}

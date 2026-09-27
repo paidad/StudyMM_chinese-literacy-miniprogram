@@ -1,0 +1,26 @@
+<view class="review-page">
+  <text class="review-title">该复习了</text>
+  <text class="review-help">点大字可以先听一遍</text>
+
+  <view wx:if="{{hasDue}}" class="due-grid">
+    <button wx:for="{{dueCards}}" wx:key="id" class="due-card" data-index="{{item.index}}" bindtap="onCardTap" hover-class="pressed">
+      <text class="due-char">{{item.char}}</text>
+      <text class="due-pinyin">{{item.pinyin}}</text>
+    </button>
+  </view>
+
+  <view wx:if="{{!hasDue}}" class="empty-review">
+    <text class="empty-review-title">现在不用复习</text>
+    <text class="empty-review-help">到时间了，这里会自动出现要复习的字</text>
+  </view>
+
+  <button wx:if="{{hasDue}}" class="start-review" bindtap="onStartReviewTap" hover-class="pressed">开始复习</button>
+  <text class="review-notice">{{notice}}</text>
+
+  <view class="shared-nav">
+    <view class="shared-nav-item" bindtap="onTodayTap" hover-class="shared-nav-pressed"><text class="shared-nav-mark">○</text><text class="shared-nav-label">今天</text></view>
+    <view class="shared-nav-item shared-nav-current" bindtap="onReviewTap" hover-class="shared-nav-pressed"><text class="shared-nav-mark">●</text><text class="shared-nav-label">复习</text></view>
+    <view class="shared-nav-item" bindtap="onProfileTap" hover-class="shared-nav-pressed"><text class="shared-nav-mark">○</text><text class="shared-nav-label">我的</text></view>
+    <view class="shared-nav-item" bindtouchstart="onInputTouchStart" bindtouchend="onInputTouchEnd" bindtouchcancel="onInputTouchEnd" hover-class="shared-nav-pressed"><text class="shared-nav-mark">○</text><text class="shared-nav-label">录入</text></view>
+  </view>
+</view>

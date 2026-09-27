@@ -1,0 +1,28 @@
+<view class="profile-page">
+  <text class="profile-title">我的学习</text>
+
+  <view class="stat-grid">
+    <view class="stat-card"><text class="stat-number">{{knownCount}}</text><text class="stat-label">已认识字词</text></view>
+    <view class="stat-card"><text class="stat-number">{{streak}}</text><text class="stat-label">连续学习天数</text></view>
+    <view class="stat-card"><text class="stat-number">{{todayCount}}</text><text class="stat-label">今天安排数量</text></view>
+    <view class="stat-card"><text class="stat-number">{{dueCount}}</text><text class="stat-label">到期复习数量</text></view>
+  </view>
+
+  <view class="lesson-box">
+    <text class="lesson-label">当前课程</text>
+    <text class="lesson-value">{{lessonText}}</text>
+  </view>
+
+  <view class="warning-box">
+    <text class="warning-title">请家人留意</text>
+    <text class="warning-text">学习记录和录音保存在这台手机里。换手机、清理微信缓存或卸载微信后，数据可能会丢失。</text>
+  </view>
+
+  <text class="profile-notice">{{notice}}</text>
+  <view class="shared-nav">
+    <view class="shared-nav-item" bindtap="onTodayTap" hover-class="shared-nav-pressed"><text class="shared-nav-mark">○</text><text class="shared-nav-label">今天</text></view>
+    <view class="shared-nav-item" bindtap="onReviewTap" hover-class="shared-nav-pressed"><text class="shared-nav-mark">○</text><text class="shared-nav-label">复习</text></view>
+    <view class="shared-nav-item shared-nav-current" bindtap="onProfileTap" hover-class="shared-nav-pressed"><text class="shared-nav-mark">●</text><text class="shared-nav-label">我的</text></view>
+    <view class="shared-nav-item" bindtouchstart="onInputTouchStart" bindtouchend="onInputTouchEnd" bindtouchcancel="onInputTouchEnd" hover-class="shared-nav-pressed"><text class="shared-nav-mark">○</text><text class="shared-nav-label">录入</text></view>
+  </view>
+</view>

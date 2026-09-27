@@ -1,0 +1,117 @@
+var assert = require('assert');
+var pageConfig;
+var storageMemory = {};
+var navigationCalls = [];
+var wxCallCount = 0;
+var scheduledTimer;
+var countdownTimer;
+
+global.Page = function (config) {
+  pageConfig = config;
+};
+
+global.wx = {
+  getStorageSync: function (key) {
+    wxCallCount += 1;
+    return storageMemory[key];
+  },
+  setStorageSync: function (key, value) {
+    wxCallCount += 1;
+    storageMemory[key] = value;
+  },
+  navigateTo: function (options) {
+    wxCallCount += 1;
+    navigationCalls.push({ method: 'navigateTo', url: options.url });
+  },
+  redirectTo: function (options) {
+    wxCallCount += 1;
+    navigationCalls.push({ method: 'redirectTo', url: options.url });
+  }
+};
+
+global.setTimeout = function (callback, delay) {
+  scheduledTimer = {
+    callback: callback,
+    delay: delay,
+    cleared: false
+  };
+  return scheduledTimer;
+};
+
+global.clearTimeout = function (timer) {
+  timer.cleared = true;
+};
+
+global.setInterval = function (callback, delay) {
+  countdownTimer = { callback: callback, delay: delay, cleared: false };
+  return countdownTimer;
+};
+
+global.clearInterval = function (timer) {
+  timer.cleared = true;
+};
+
+require('../pages/index/index.js');
+assert.strictEqual(wxCallCount, 0, 'loading the page must not call wx before Page registration');
+
+var page = {};
+var configKey;
+for (configKey in pageConfig) {
+  if (Object.prototype.hasOwnProperty.call(pageConfig, configKey) && configKey !== 'data') {
+    page[configKey] = pageConfig[configKey];
+  }
+}
+page.data = JSON.parse(JSON.stringify(pageConfig.data));
+page.setData = function (patch) {
+  var key;
+  for (key in patch) {
+    if (Object.prototype.hasOwnProperty.call(patch, key)) {
+      this.data[key] = patch[key];
+    }
+  }
+};
+
+pageConfig.onShow.call(page);
+pageConfig.onStartTap.call(page);
+assert.deepStrictEqual(navigationCalls.pop(), {
+  method: 'navigateTo',
+  url: '/study/pages/learn/learn?mode=today'
+});
+
+pageConfig.onReviewTap.call(page);
+assert.deepStrictEqual(navigationCalls.pop(), {
+  method: 'redirectTo',
+  url: '/pages/review/review'
+});
+
+pageConfig.onProfileTap.call(page);
+assert.deepStrictEqual(navigationCalls.pop(), {
+  method: 'redirectTo',
+  url: '/pages/profile/profile'
+});
+
+pageConfig.onInputTouchStart.call(page);
+assert.strictEqual(scheduledTimer.delay, 3000);
+assert.strictEqual(page.data.inputNavLabel, '3');
+countdownTimer.callback();
+assert.strictEqual(page.data.inputNavLabel, '2');
+pageConfig.onInputTouchEnd.call(page);
+assert.strictEqual(page.data.inputNavLabel, '录入');
+if (!scheduledTimer.cleared) {
+  scheduledTimer.callback();
+}
+assert.strictEqual(navigationCalls.length, 0, 'short press must not open input');
+
+pageConfig.onInputTouchStart.call(page);
+assert.strictEqual(scheduledTimer.delay, 3000);
+countdownTimer.callback();
+countdownTimer.callback();
+assert.strictEqual(page.data.inputNavLabel, '1');
+scheduledTimer.callback();
+assert.strictEqual(page.data.inputNavLabel, '录入');
+assert.deepStrictEqual(navigationCalls.pop(), {
+  method: 'navigateTo',
+  url: '/pages/input/input'
+});
+
+console.log('All routing tests passed.');

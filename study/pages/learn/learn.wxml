@@ -1,0 +1,45 @@
+<view class="study-page">
+  <view wx:if="{{showCard}}">
+    <text class="round-label">{{roundLabel}}</text>
+    <view class="study-dots">
+      <view wx:for="{{progressDots}}" wx:key="id" class="study-dot study-dot-{{item.state}}"></view>
+    </view>
+
+    <view class="study-card">
+      <text class="study-pinyin">{{card.pinyin}}</text>
+      <text class="study-char" bindtap="onListenTap" hover-class="pressed">{{card.char}}</text>
+      <text class="study-tip">{{card.tip}}</text>
+    </view>
+
+    <view class="word-list">
+      <button wx:for="{{wordItems}}" wx:key="id" class="word-button" data-index="{{item.index}}" bindtap="onWordTap" hover-class="pressed">{{item.text}}</button>
+    </view>
+    <button class="sentence-button" bindtap="onSentenceTap" hover-class="pressed">{{card.sentence}}</button>
+    <text class="audio-notice">{{audioNotice}}</text>
+
+    <view class="study-actions">
+      <button class="action-button write-action" bindtap="onWriteTap" hover-class="pressed">看怎么写</button>
+      <button class="action-button unsure-action" bindtap="onNotKnownTap" hover-class="pressed">还不熟</button>
+      <button class="action-button known-action" bindtap="onKnownTap" hover-class="pressed">认识了</button>
+    </view>
+  </view>
+
+  <view wx:if="{{showQuiz}}" class="quiz-view">
+    <text class="quiz-title">听一听，选出这个字</text>
+    <button class="replay-button" bindtap="onReplayQuestionTap" hover-class="pressed">再听一遍</button>
+    <view class="quiz-options">
+      <button wx:for="{{quizOptions}}" wx:key="id" class="quiz-option {{item.state}}" data-char="{{item.char}}" bindtap="onQuizChoiceTap" hover-class="pressed">{{item.char}}</button>
+    </view>
+    <text class="quiz-feedback">{{quizFeedback}}</text>
+    <text class="audio-notice">{{audioNotice}}</text>
+  </view>
+
+  <view wx:if="{{showComplete}}" class="complete-view">
+    <text class="complete-title">{{completeTitle}}</text>
+    <text class="complete-count">已经认识 {{knownCount}} 个字词</text>
+    <button class="complete-primary" bindtap="onHomeTap" hover-class="pressed">回到今天</button>
+    <button class="complete-secondary" bindtap="onReviewPageTap" hover-class="pressed">去复习</button>
+  </view>
+
+  <text class="page-notice">{{notice}}</text>
+</view>

@@ -1,0 +1,35 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/review/review",
+    "pages/profile/profile",
+    "pages/input/input"
+  ],
+  "subpackages": [
+    {
+      "root": "study",
+      "name": "study",
+      "pages": [
+        "pages/learn/learn"
+      ]
+    },
+    {
+      "root": "stroke",
+      "name": "stroke",
+      "pages": [
+        "pages/write/write"
+      ]
+    }
+  ],
+  "window": {
+    "navigationBarTitleText": "妈妈学认字",
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#ffffff"
+  },
+  "permission": {
+    "scope.record": {
+      "desc": "用于录制家人读字的声音"
+    }
+  }
+}

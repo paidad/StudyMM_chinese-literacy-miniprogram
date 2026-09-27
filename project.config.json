@@ -1,0 +1,29 @@
+{
+  "setting": {
+    "es6": false,
+    "postcss": false,
+    "minified": false,
+    "uglifyFileName": false,
+    "enhance": false,
+    "useCompilerPlugins": false
+  },
+  "compileType": "miniprogram",
+  "packOptions": {
+    "ignore": [
+      {
+        "type": "folder",
+        "value": "tests"
+      },
+      {
+        "type": "folder",
+        "value": "scripts"
+      },
+      {
+        "type": "file",
+        "value": "REBUILD_PROMPT.md"
+      }
+    ]
+  },
+  "appid": "touristappid",
+  "projectname": "studyMM_rebuild"
+}

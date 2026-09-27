@@ -1,0 +1,25 @@
+# WeChat Developer Tools local settings and generated files
+project.private.config.json
+miniprogram_npm/
+.miniprogram/
+
+# Dependencies and build output
+node_modules/
+dist/
+coverage/
+
+# Editor and operating-system files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
+
+# WorkBuddy AI local data (project memory and publish records)
+.workbuddy-ai/
+.workbuddy/
+.wbapp_*.genie
