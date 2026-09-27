@@ -134,14 +134,8 @@
   line-height: 1;
 }
 
-.eraser-icon {
-  width: 34rpx;
-  height: 22rpx;
-  margin-right: 16rpx;
-  border: 4rpx solid currentColor;
-  border-radius: 5rpx;
-  box-sizing: border-box;
-  transform: rotate(-35deg);
+.rewrite-icon {
+  font-size: 48rpx;
 }
 
 .trace-listen-button {
