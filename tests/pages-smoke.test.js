@@ -68,6 +68,7 @@ assert.strictEqual(missingWrite.data.hasStrokeData, false);
 assert.ok(missingWrite.data.status.indexOf('还没有笔顺动画') >= 0);
 
 var indexMarkup = fs.readFileSync(path.join(__dirname, '../pages/index/index.wxml'), 'utf8');
+var indexStyles = fs.readFileSync(path.join(__dirname, '../pages/index/index.wxss'), 'utf8');
 assert.strictEqual(indexMarkup.indexOf('慢慢来，听一听，看一看'), -1);
 assert.strictEqual(indexMarkup.indexOf('今天有 {{todayCount}} 个字词'), -1);
 assert.strictEqual(indexMarkup.indexOf('复习以前学过的字'), -1);
@@ -84,6 +85,8 @@ assert.ok(learnMarkup.indexOf('×</text><text>还不熟') >= 0);
 assert.ok(learnMarkup.indexOf('✓</text><text>认识了') >= 0);
 assert.ok(learnMarkup.indexOf('wx:if="{{hasSentence}}" class="sentence-button"') >= 0);
 assert.ok(/\.write-action\s*\{[^}]*border:\s*4rpx solid #a63e0c;[^}]*background:\s*#a63e0c;/m.test(learnStyles));
+assert.ok(/\.primary-button\s*\{[^}]*bottom:\s*170rpx;/m.test(indexStyles));
+assert.ok(/\.study-actions\s*\{[^}]*bottom:\s*170rpx;/m.test(learnStyles));
 
 var writeMarkup = fs.readFileSync(path.join(__dirname, '../stroke/pages/write/write.wxml'), 'utf8');
 var writeStyles = fs.readFileSync(path.join(__dirname, '../stroke/pages/write/write.wxss'), 'utf8');

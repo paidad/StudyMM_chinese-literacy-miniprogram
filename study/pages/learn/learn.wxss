@@ -118,7 +118,7 @@
   z-index: 10;
   left: 28rpx;
   right: 28rpx;
-  bottom: 250rpx;
+  bottom: 170rpx;
   flex-wrap: wrap;
   margin-top: 0;
   padding: 8rpx;
