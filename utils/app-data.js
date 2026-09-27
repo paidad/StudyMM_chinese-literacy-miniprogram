@@ -22,16 +22,14 @@ function getTodayCards(state, course, now) {
   var lessons;
   var lessonIndex;
 
-  if (state.today.date === todayText && state.today.chars.length > 0) {
+  if (state.today.date === todayText) {
     state.today.chars.forEach(function (key) {
       var item = getCard(state, course, key);
       if (item) {
         customCards.push(item);
       }
     });
-    if (customCards.length > 0) {
-      return customCards;
-    }
+    return customCards;
   }
 
   lessons = course.getLessons();

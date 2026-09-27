@@ -1,53 +1,59 @@
 <view class="input-page">
   <scroll-view class="input-scroll" scroll-y="true">
-  <text class="input-title">家人录入</text>
-  <text class="input-help">连着输入会按单字拆开；用空格或逗号隔开，会按词保存。</text>
+    <text class="input-title">家人录入</text>
+    <text class="input-help">连着输入按单字拆开；用空格或逗号隔开，会按词保存。</text>
 
-  <textarea class="raw-input" value="{{rawInput}}" bindinput="onRawInput" bindblur="onRawInput" placeholder="例如：河水湖海　或　医院 银行" maxlength="100"></textarea>
-  <button class="main-button" bindtap="onParseTap" catchtouchend="onParseTouchEnd" hover-class="pressed">认一认这些字词</button>
+    <textarea class="raw-input" value="{{rawInput}}" bindinput="onRawInput" bindblur="onRawInput" placeholder="例如：河水湖海　或　医院 银行" maxlength="100"></textarea>
+    <button class="add-button" bindtap="onAddLearningTap" catchtouchend="onAddLearningTouchEnd" hover-class="pressed">加入学习</button>
 
-  <view wx:if="{{hasParsed}}">
-    <view class="card-selector">
-      <button wx:for="{{parsedCards}}" wx:key="id" class="select-card {{item.state}}" data-index="{{item.index}}" bindtap="onSelectCardTap" hover-class="pressed">{{item.char}}</button>
-    </view>
-
-    <view class="edit-box">
-      <text class="edit-char">{{selectedChar}}</text>
-      <text class="field-label">拼音</text>
-      <input class="field-input" value="{{editPinyin}}" bindinput="onPinyinInput"></input>
-      <text class="field-label">常用组词，用顿号隔开</text>
-      <input class="field-input" value="{{editWords}}" bindinput="onWordsInput"></input>
-      <text class="field-label">例句</text>
-      <input class="field-input" value="{{editSentence}}" bindinput="onSentenceInput"></input>
-      <text class="field-label">怎么记</text>
-      <textarea class="tip-input" value="{{editTip}}" bindinput="onTipInput" maxlength="100"></textarea>
-    </view>
-
-    <button class="main-button add-today-button" bindtap="onAddTodayTap" hover-class="pressed">添加到今天学习任务</button>
-
-    <view class="recording-box">
-      <text class="recording-title">给“{{selectedChar}}”录音</text>
-      <text class="recording-status">{{recordingStatus}}</text>
-      <button class="record-button {{recordButtonStyle}}" bindtap="onRecordTap" disabled="{{recordButtonDisabled}}" hover-class="pressed">{{recordButtonText}}</button>
-      <button wx:if="{{showSettings}}" class="settings-button" bindtap="onOpenSettingTap" hover-class="pressed">去打开麦克风</button>
-      <button wx:if="{{hasRecording}}" class="preview-button" bindtap="onPreviewTap" hover-class="pressed">{{previewButtonText}}</button>
-      <button wx:if="{{hasRecording}}" class="delete-button" bindtap="onDeleteRecordingTap" hover-class="pressed">删除这段录音</button>
-    </view>
-  </view>
-
-  <view class="today-box">
-    <text class="today-title">今天已经安排</text>
-    <view wx:if="{{hasTodayItems}}">
-      <view wx:for="{{todayItems}}" wx:key="id" class="today-row">
-        <text class="today-char">{{item.char}}</text>
-        <button class="remove-button" data-char="{{item.char}}" bindtap="onRemoveTodayTap" hover-class="pressed">从今天拿掉</button>
+    <view class="today-box">
+      <view class="today-heading">
+        <text class="today-title">今天的字（{{todayCount}}个）</text>
+        <text wx:if="{{hasTodayItems}}" class="clear-link" bindtap="onClearTodayTap">清空</text>
       </view>
-      <button class="clear-button" bindtap="onClearTodayTap" hover-class="pressed">清空今天的安排</button>
+
+      <view wx:if="{{hasTodayItems}}" class="today-list">
+        <view wx:for="{{todayItems}}" wx:key="id" class="today-row">
+          <view class="word-summary" data-char="{{item.char}}" bindtap="onTodayWordTap" hover-class="word-summary-pressed">
+            <text class="today-char">{{item.char}}</text>
+            <text class="today-pinyin">{{item.pinyin}}</text>
+            <text class="speaker-mark">🔊</text>
+          </view>
+          <view class="row-actions">
+            <button class="row-button record-row-button {{item.recordState}}" data-char="{{item.char}}" bindtap="onRecordRowTap" hover-class="pressed">{{item.recordLabel}}</button>
+            <button class="row-button supplement-button {{item.supplementState}}" data-char="{{item.char}}" bindtap="onSupplementTap" hover-class="pressed">{{item.supplementLabel}}</button>
+            <button class="row-button remove-button" data-char="{{item.char}}" bindtap="onRemoveTodayTap" hover-class="pressed">拿掉</button>
+          </view>
+        </view>
+      </view>
+
+      <text wx:if="{{!hasTodayItems}}" class="today-empty">还没有安排内容</text>
     </view>
-    <text wx:if="{{!hasTodayItems}}" class="today-empty">还没有家人安排的内容</text>
+
+    <text class="input-notice">{{notice}}</text>
+    <button wx:if="{{showSettings}}" class="settings-button" bindtap="onOpenSettingTap" hover-class="pressed">打开麦克风权限</button>
+  </scroll-view>
+
+  <view class="bottom-nav">
+    <view class="nav-item" bindtap="onTodayTap" hover-class="nav-pressed"><text class="nav-mark">○</text><text class="nav-label">今天</text></view>
+    <view class="nav-item" bindtap="onReviewTap" hover-class="nav-pressed"><text class="nav-mark">○</text><text class="nav-label">复习</text></view>
+    <view class="nav-item" bindtap="onProfileTap" hover-class="nav-pressed"><text class="nav-mark">○</text><text class="nav-label">我的</text></view>
+    <view class="nav-item nav-current"><text class="nav-mark">●</text><text class="nav-label">录入</text></view>
   </view>
 
-  <text class="input-notice">{{notice}}</text>
-  <button class="back-button" bindtap="onBackTap" hover-class="pressed">回到今天</button>
-  </scroll-view>
+  <view wx:if="{{showSupplement}}" class="modal-mask" catchtouchmove="stopTouchMove">
+    <view class="supplement-modal">
+      <text class="modal-title">补充“{{supplementChar}}”</text>
+      <text class="field-label">常用词</text>
+      <input class="field-input" value="{{editWords}}" bindinput="onWordsInput" placeholder="例如：山上、高山"></input>
+      <text class="field-label">例句</text>
+      <input class="field-input" value="{{editSentence}}" bindinput="onSentenceInput" placeholder="例如：那边有座山。"></input>
+      <text class="field-label">怎么记</text>
+      <textarea class="tip-input" value="{{editTip}}" bindinput="onTipInput" placeholder="例如：三个山头。" maxlength="100"></textarea>
+      <view class="modal-actions">
+        <button class="modal-button cancel-button" bindtap="onCancelSupplement" hover-class="pressed">取消</button>
+        <button class="modal-button save-button" bindtap="onSaveSupplement" hover-class="pressed">保存</button>
+      </view>
+    </view>
+  </view>
 </view>

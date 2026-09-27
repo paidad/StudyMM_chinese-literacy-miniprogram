@@ -21,6 +21,9 @@ assert.deepStrictEqual(appData.getTodayCards(state, course, now).map(function (i
   return item.char;
 }), ['医院']);
 
+state.today = { date: appData.formatDate(now), chars: [] };
+assert.deepStrictEqual(appData.getTodayCards(state, course, now), [], 'an explicitly cleared day must stay empty');
+
 assert.deepStrictEqual(appData.updateStreak({
   lastStudyDate: '', streak: 0, totalSessions: 0
 }, now), {

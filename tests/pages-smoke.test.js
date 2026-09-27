@@ -89,6 +89,17 @@ assert.ok(indexMarkup.indexOf('wx:for="{{todayItems}}"') >= 0, 'today page must 
 assert.ok(indexMarkup.indexOf('data-index="{{item.index}}"') >= 0, 'each study item must be independently clickable');
 assert.ok(indexMarkup.indexOf('{{item.pinyin}}') >= 0, 'each study item must show its pinyin');
 
+var inputMarkup = fs.readFileSync(path.join(__dirname, '../pages/input/input.wxml'), 'utf8');
+var inputStyles = fs.readFileSync(path.join(__dirname, '../pages/input/input.wxss'), 'utf8');
+assert.ok(inputMarkup.indexOf('>加入学习</button>') >= 0);
+assert.ok(inputMarkup.indexOf('bindtap="onTodayWordTap"') >= 0);
+assert.ok(inputMarkup.indexOf('bindtap="onRecordRowTap"') >= 0);
+assert.ok(inputMarkup.indexOf('bindtap="onSupplementTap"') >= 0);
+assert.ok(inputMarkup.indexOf('bindtap="onRemoveTodayTap"') >= 0);
+assert.ok(inputMarkup.indexOf('wx:if="{{showSupplement}}" class="modal-mask"') >= 0);
+assert.ok(inputMarkup.indexOf('nav-item nav-current') >= 0);
+assert.ok(/\.bottom-nav\s*\{[^}]*position:\s*fixed;[^}]*bottom:\s*0;/m.test(inputStyles));
+
 var learnMarkup = fs.readFileSync(path.join(__dirname, '../study/pages/learn/learn.wxml'), 'utf8');
 var learnStyles = fs.readFileSync(path.join(__dirname, '../study/pages/learn/learn.wxss'), 'utf8');
 assert.ok(learnMarkup.indexOf('✎</text><text>看怎么写') >= 0);
