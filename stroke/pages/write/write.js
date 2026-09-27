@@ -113,6 +113,55 @@ Page({
     }
   },
 
+  onSpeakerTap: function () {
+    var storageModule = require('../../../utils/storage.js');
+    var speechData = require('../../../utils/speech-data.js');
+    var pinyinMap = require('../../../data/pinyin.js');
+    var state = storageModule.createStorage({
+      get: function (key) { return wx.getStorageSync(key); },
+      set: function (key, value) { wx.setStorageSync(key, value); }
+    }).load().state;
+    var text = this.data.char;
+    var savedPath = state.recordings[text];
+    var fallbackMap = pinyinMap;
+    var customCard = state.chars[text];
+    var fallbackSources;
+
+    if (text.length === 1 && customCard && customCard.pinyin) {
+      fallbackMap = {};
+      fallbackMap[text] = customCard.pinyin;
+    }
+    fallbackSources = speechData.textToSyllableSources(text, fallbackMap);
+    if (savedPath) {
+      this.playPronunciation([savedPath], fallbackSources);
+      return;
+    }
+    if (!fallbackSources.length) {
+      this.setData({ status: '还没有声音，请家人录一遍' });
+      return;
+    }
+    this.playPronunciation(fallbackSources, []);
+  },
+
+  playPronunciation: function (sources, fallbackSources) {
+    var that = this;
+    var audioPlayerModule;
+    this.destroyAudioPlayer();
+    audioPlayerModule = require('../../../utils/sequence-audio-player.js');
+    this.audioPlayer = audioPlayerModule.createSequenceAudioPlayer(function () {
+      return wx.createInnerAudioContext();
+    });
+    this.audioPlayer.play(sources, {
+      onError: function () {
+        if (fallbackSources && fallbackSources.length) {
+          that.playPronunciation(fallbackSources, []);
+        } else {
+          that.setData({ status: '声音没有播出来，请再试一次' });
+        }
+      }
+    });
+  },
+
   drawCompleteReference: function () {
     var that = this;
     this.drawGrid(this.animationContext, false, this.referenceCanvasSize);
@@ -261,7 +310,15 @@ Page({
     }
   },
 
+  destroyAudioPlayer: function () {
+    if (this.audioPlayer) {
+      this.audioPlayer.destroy();
+      this.audioPlayer = null;
+    }
+  },
+
   onUnload: function () {
     this.clearAnimationTimer();
+    this.destroyAudioPlayer();
   }
 });

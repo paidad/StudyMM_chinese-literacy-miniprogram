@@ -89,6 +89,9 @@ var writeMarkup = fs.readFileSync(path.join(__dirname, '../stroke/pages/write/wr
 var writeStyles = fs.readFileSync(path.join(__dirname, '../stroke/pages/write/write.wxss'), 'utf8');
 assert.ok(writeMarkup.indexOf('↻</text><text>回放') >= 0);
 assert.ok(writeMarkup.indexOf('✎</text><text>手写') >= 0);
+assert.ok(writeMarkup.indexOf('class="write-button listen-button"') >= 0);
+assert.ok(writeMarkup.indexOf('<text class="speaker-icon">🔊</text>') >= 0);
 assert.ok(/\.trace-mode-button\s*\{[^}]*border:\s*4rpx solid #39704d;[^}]*background:\s*#39704d;/m.test(writeStyles));
+assert.ok(/\.listen-button\s*\{[^}]*background:\s*transparent;/m.test(writeStyles));
 
 console.log('All page smoke tests passed.');

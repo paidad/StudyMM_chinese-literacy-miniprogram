@@ -81,6 +81,18 @@
   background: #39704d;
 }
 
+.listen-button {
+  border: 4rpx solid #6f2a09;
+  color: #6f2a09;
+  background: transparent;
+}
+
+.speaker-icon {
+  display: block;
+  font-size: 48rpx;
+  line-height: 1;
+}
+
 .trace-box {
   width: 700rpx;
   height: 700rpx;
