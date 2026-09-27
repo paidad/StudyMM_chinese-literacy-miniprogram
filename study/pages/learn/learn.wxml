@@ -14,7 +14,7 @@
     <view class="word-list">
       <button wx:for="{{wordItems}}" wx:key="id" class="word-button" data-index="{{item.index}}" bindtap="onWordTap" hover-class="pressed">{{item.text}}</button>
     </view>
-    <button class="sentence-button" bindtap="onSentenceTap" hover-class="pressed">{{card.sentence}}</button>
+    <button wx:if="{{hasSentence}}" class="sentence-button" bindtap="onSentenceTap" hover-class="pressed">{{card.sentence}}</button>
     <text class="audio-notice">{{audioNotice}}</text>
 
     <view class="study-actions">

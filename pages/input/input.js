@@ -214,7 +214,7 @@ Page({
         char: item.char,
         pinyin: item.pinyin || '请填写拼音',
         words: item.words.length > 0 ? item.words : [item.char],
-        sentence: item.sentence || '请家人补一句常用的话。',
+        sentence: item.sentence || '',
         tip: item.tip || '看清字形，慢慢记。',
         lesson: item.lesson || 0,
         updatedAt: Date.now()

@@ -50,6 +50,11 @@ learn.onLoad({ mode: 'today' });
 assert.strictEqual(learn.data.showCard, true);
 assert.strictEqual(learn.data.card.char, '一');
 assert.strictEqual(learn.originalCards.length, 3);
+assert.strictEqual(learn.data.hasSentence, true);
+assert.strictEqual(learn.shouldShowSentence(''), false);
+assert.strictEqual(learn.shouldShowSentence('   '), false);
+assert.strictEqual(learn.shouldShowSentence('请家人补一句常用的话。'), false);
+assert.strictEqual(learn.shouldShowSentence('我回家了。'), true);
 
 var write = loadPage('../stroke/pages/write/write.js');
 write.onLoad({ char: encodeURIComponent('一') });
@@ -75,5 +80,6 @@ var learnMarkup = fs.readFileSync(path.join(__dirname, '../study/pages/learn/lea
 assert.ok(learnMarkup.indexOf('✎</text><text>看怎么写') >= 0);
 assert.ok(learnMarkup.indexOf('×</text><text>还不熟') >= 0);
 assert.ok(learnMarkup.indexOf('✓</text><text>认识了') >= 0);
+assert.ok(learnMarkup.indexOf('wx:if="{{hasSentence}}" class="sentence-button"') >= 0);
 
 console.log('All page smoke tests passed.');

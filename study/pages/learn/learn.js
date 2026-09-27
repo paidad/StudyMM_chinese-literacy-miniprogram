@@ -4,6 +4,7 @@ Page({
     showQuiz: false,
     showComplete: false,
     card: { char: '', pinyin: '', words: [], sentence: '', tip: '' },
+    hasSentence: false,
     wordItems: [],
     progressDots: [],
     roundLabel: '先看一遍',
@@ -95,6 +96,7 @@ Page({
       showQuiz: false,
       showComplete: false,
       card: card,
+      hasSentence: this.shouldShowSentence(card.sentence),
       wordItems: card.words.map(function (word, index) {
         return { id: word + index, text: word, index: index };
       }),
@@ -128,6 +130,13 @@ Page({
 
   onSentenceTap: function () {
     this.playCardAudio('sentence', 0);
+  },
+
+  shouldShowSentence: function (sentence) {
+    if (typeof sentence !== 'string' || sentence.replace(/^\s+|\s+$/g, '') === '') {
+      return false;
+    }
+    return sentence !== '请家人补一句常用的话。';
   },
 
   getAudioSources: function (card, kind, index) {

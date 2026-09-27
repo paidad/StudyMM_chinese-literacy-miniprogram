@@ -114,8 +114,13 @@
 
 .study-actions {
   display: flex;
+  position: fixed;
+  z-index: 10;
+  left: 28rpx;
+  right: 28rpx;
+  bottom: 250rpx;
   flex-wrap: wrap;
-  margin-top: 46rpx;
+  margin-top: 0;
   padding: 8rpx;
   border-radius: 24rpx;
   background: #f2e3cf;
