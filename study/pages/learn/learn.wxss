@@ -115,20 +115,31 @@
 .study-actions {
   display: flex;
   flex-wrap: wrap;
-  margin-top: 0;
+  margin-top: 46rpx;
   padding: 8rpx;
   border-radius: 24rpx;
   background: #f2e3cf;
 }
 
 .action-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 46%;
   min-height: 116rpx;
   margin: 6rpx 2%;
   border-radius: 22rpx;
   font-size: 38rpx;
   font-weight: bold;
-  line-height: 116rpx;
+  line-height: 1.2;
+}
+
+.action-icon {
+  display: inline-block;
+  margin-right: 14rpx;
+  font-size: 44rpx;
+  font-weight: bold;
+  line-height: 1;
 }
 
 .replay-button,
@@ -137,7 +148,6 @@
   background: #a84524;
 }
 
-.write-action,
 .complete-secondary {
   border: 4rpx solid #9a5a32;
   color: #7d3d20;
@@ -146,6 +156,9 @@
 
 .write-action {
   width: 96%;
+  border: 4rpx solid #b9472c;
+  color: #ffffff;
+  background: #b9472c;
 }
 
 .unsure-action {
@@ -156,8 +169,8 @@
 
 .known-action {
   border: 4rpx solid #39704d;
-  color: #39704d;
-  background: #fffdf8;
+  color: #ffffff;
+  background: #39704d;
 }
 
 .pressed {

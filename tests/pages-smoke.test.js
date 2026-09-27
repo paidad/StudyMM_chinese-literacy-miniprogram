@@ -71,4 +71,9 @@ assert.ok(indexMarkup.indexOf('wx:for="{{todayItems}}"') >= 0, 'today page must 
 assert.ok(indexMarkup.indexOf('data-index="{{item.index}}"') >= 0, 'each study item must be independently clickable');
 assert.ok(indexMarkup.indexOf('{{item.pinyin}}') >= 0, 'each study item must show its pinyin');
 
+var learnMarkup = fs.readFileSync(path.join(__dirname, '../study/pages/learn/learn.wxml'), 'utf8');
+assert.ok(learnMarkup.indexOf('✎</text><text>看怎么写') >= 0);
+assert.ok(learnMarkup.indexOf('×</text><text>还不熟') >= 0);
+assert.ok(learnMarkup.indexOf('✓</text><text>认识了') >= 0);
+
 console.log('All page smoke tests passed.');

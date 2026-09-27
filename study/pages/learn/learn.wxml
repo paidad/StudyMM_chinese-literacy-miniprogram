@@ -18,9 +18,9 @@
     <text class="audio-notice">{{audioNotice}}</text>
 
     <view class="study-actions">
-      <button class="action-button write-action" bindtap="onWriteTap" hover-class="pressed">看怎么写</button>
-      <button class="action-button unsure-action" bindtap="onNotKnownTap" hover-class="pressed">还不熟</button>
-      <button class="action-button known-action" bindtap="onKnownTap" hover-class="pressed">认识了</button>
+      <button class="action-button write-action" bindtap="onWriteTap" hover-class="pressed"><text class="action-icon">✎</text><text>看怎么写</text></button>
+      <button class="action-button unsure-action" bindtap="onNotKnownTap" hover-class="pressed"><text class="action-icon">×</text><text>还不熟</text></button>
+      <button class="action-button known-action" bindtap="onKnownTap" hover-class="pressed"><text class="action-icon">✓</text><text>认识了</text></button>
     </view>
   </view>
 
