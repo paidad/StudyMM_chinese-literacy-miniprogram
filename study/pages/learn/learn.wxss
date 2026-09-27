@@ -161,9 +161,9 @@
 
 .write-action {
   width: 96%;
-  border: 4rpx solid #b9472c;
+  border: 4rpx solid #a63e0c;
   color: #ffffff;
-  background: #b9472c;
+  background: #a63e0c;
 }
 
 .unsure-action {

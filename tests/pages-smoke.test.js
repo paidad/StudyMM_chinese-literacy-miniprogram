@@ -77,9 +77,11 @@ assert.ok(indexMarkup.indexOf('data-index="{{item.index}}"') >= 0, 'each study i
 assert.ok(indexMarkup.indexOf('{{item.pinyin}}') >= 0, 'each study item must show its pinyin');
 
 var learnMarkup = fs.readFileSync(path.join(__dirname, '../study/pages/learn/learn.wxml'), 'utf8');
+var learnStyles = fs.readFileSync(path.join(__dirname, '../study/pages/learn/learn.wxss'), 'utf8');
 assert.ok(learnMarkup.indexOf('✎</text><text>看怎么写') >= 0);
 assert.ok(learnMarkup.indexOf('×</text><text>还不熟') >= 0);
 assert.ok(learnMarkup.indexOf('✓</text><text>认识了') >= 0);
 assert.ok(learnMarkup.indexOf('wx:if="{{hasSentence}}" class="sentence-button"') >= 0);
+assert.ok(/\.write-action\s*\{[^}]*border:\s*4rpx solid #a63e0c;[^}]*background:\s*#a63e0c;/m.test(learnStyles));
 
 console.log('All page smoke tests passed.');
