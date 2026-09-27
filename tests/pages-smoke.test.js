@@ -67,5 +67,8 @@ assert.strictEqual(indexMarkup.indexOf('今天有 {{todayCount}} 个字词'), -1
 assert.strictEqual(indexMarkup.indexOf('复习以前学过的字'), -1);
 assert.strictEqual(indexMarkup.indexOf('已经认识的字词'), -1);
 assert.ok(indexMarkup.indexOf('{{notice}}') >= 0, 'important failure messages must remain visible');
+assert.ok(indexMarkup.indexOf('wx:for="{{todayItems}}"') >= 0, 'today page must list every study item');
+assert.ok(indexMarkup.indexOf('data-index="{{item.index}}"') >= 0, 'each study item must be independently clickable');
+assert.ok(indexMarkup.indexOf('{{item.pinyin}}') >= 0, 'each study item must show its pinyin');
 
 console.log('All page smoke tests passed.');

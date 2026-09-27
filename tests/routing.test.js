@@ -19,6 +19,16 @@ global.wx = {
     wxCallCount += 1;
     storageMemory[key] = value;
   },
+  createInnerAudioContext: function () {
+    wxCallCount += 1;
+    return {
+      onEnded: function (callback) { this.endedCallback = callback; },
+      onError: function (callback) { this.errorCallback = callback; },
+      play: function () {},
+      stop: function () {},
+      destroy: function () {}
+    };
+  },
   navigateTo: function (options) {
     wxCallCount += 1;
     navigationCalls.push({ method: 'navigateTo', url: options.url });
@@ -72,6 +82,9 @@ page.setData = function (patch) {
 };
 
 pageConfig.onShow.call(page);
+assert.strictEqual(page.data.todayItems.length, 3);
+pageConfig.onWordTap.call(page, { currentTarget: { dataset: { index: 1 } } });
+assert.strictEqual(page.data.notice, '正在读“二”');
 pageConfig.onStartTap.call(page);
 assert.deepStrictEqual(navigationCalls.pop(), {
   method: 'navigateTo',

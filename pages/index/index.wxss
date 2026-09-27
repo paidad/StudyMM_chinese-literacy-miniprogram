@@ -1,8 +1,10 @@
 .page {
+  display: flex;
+  flex-direction: column;
   height: 100vh;
   overflow: hidden;
   box-sizing: border-box;
-  padding: 20rpx 30rpx 170rpx;
+  padding: 20rpx 30rpx 310rpx;
   background: #fffaf0;
   text-align: center;
 }
@@ -25,13 +27,41 @@
   line-height: 1.5;
 }
 
-.word-card,
-.empty-card {
-  padding: 18rpx 20rpx 22rpx;
+.word-grid-scroll {
+  flex: 1;
+  min-height: 0;
+}
+
+.word-grid {
+  display: flex;
+  justify-content: center;
+  align-content: flex-start;
+  flex-wrap: wrap;
+  padding: 4rpx 0 16rpx;
+}
+
+.word-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 210rpx;
+  height: 210rpx;
+  margin: 9rpx;
+  padding: 10rpx;
+  box-sizing: border-box;
   border: 4rpx solid #222222;
-  border-radius: 32rpx;
+  border-radius: 24rpx;
   background: #ffffff;
-  box-shadow: 0 10rpx 0 #eadfca;
+  box-shadow: 0 7rpx 0 #eadfca;
+}
+
+.empty-card {
+  padding: 36rpx 20rpx;
+  border: 4rpx solid #222222;
+  border-radius: 24rpx;
+  background: #ffffff;
+  box-shadow: 0 7rpx 0 #eadfca;
 }
 
 .word-card-pressed,
@@ -42,20 +72,26 @@
 
 .pinyin {
   display: block;
-  font-size: 42rpx;
+  width: 100%;
+  overflow: hidden;
+  font-size: 30rpx;
   line-height: 1.4;
   color: #555555;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .character {
   display: block;
-  margin: 2rpx 0 10rpx;
-  font-size: 150rpx;
+  width: 100%;
+  overflow: hidden;
+  margin-top: 4rpx;
+  font-size: 82rpx;
   font-weight: bold;
-  line-height: 1.15;
+  line-height: 1.2;
+  white-space: nowrap;
 }
 
-.listen-hint,
 .empty-help {
   display: block;
   font-size: 32rpx;
@@ -70,29 +106,12 @@
   font-weight: bold;
 }
 
-.lesson-progress {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  padding-top: 10rpx;
-}
-
-.progress-dot {
-  width: 32rpx;
-  height: 32rpx;
-  margin: 8rpx 12rpx;
-  border: 4rpx solid #555555;
-  border-radius: 50%;
-  box-sizing: border-box;
-  background: #ffffff;
-}
-
-.progress-dot-current {
-  border-color: #b74712;
-  background: #b74712;
-}
-
 .primary-button {
+  position: fixed;
+  z-index: 18;
+  left: 30rpx;
+  right: 30rpx;
+  bottom: 170rpx;
   min-height: 120rpx;
   margin: 0;
   border-radius: 24rpx;

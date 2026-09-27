@@ -3,20 +3,19 @@
     <text class="greeting">今天学这个</text>
   </view>
 
-  <view wx:if="{{!isEmpty}}" class="word-card" bindtap="onWordTap" hover-class="word-card-pressed">
-    <text class="pinyin">{{preview.pinyin}}</text>
-    <text class="character">{{preview.char}}</text>
-    <text class="listen-hint">点一下听家人录的声音</text>
-  </view>
+  <scroll-view class="word-grid-scroll" scroll-y="true">
+    <view wx:if="{{!isEmpty}}" class="word-grid">
+      <view wx:for="{{todayItems}}" wx:key="id" class="word-card" data-index="{{item.index}}" bindtap="onWordTap" hover-class="word-card-pressed">
+        <text class="pinyin">{{item.pinyin}}</text>
+        <text class="character">{{item.char}}</text>
+      </view>
+    </view>
 
-  <view wx:if="{{isEmpty}}" class="empty-card">
-    <text class="empty-title">内置课程学完了</text>
-    <text class="empty-help">可以请家人按住“录入”安排新内容</text>
-  </view>
-
-  <view class="lesson-progress">
-    <view wx:for="{{progressDots}}" wx:key="id" class="progress-dot progress-dot-{{item.state}}"></view>
-  </view>
+    <view wx:if="{{isEmpty}}" class="empty-card">
+      <text class="empty-title">内置课程学完了</text>
+      <text class="empty-help">可以请家人按住“录入”安排新内容</text>
+    </view>
+  </scroll-view>
 
   <button class="primary-button" bindtap="onStartTap" hover-class="button-pressed">开始学</button>
   <text class="notice">{{notice}}</text>

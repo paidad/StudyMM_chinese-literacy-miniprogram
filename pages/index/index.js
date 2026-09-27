@@ -1,7 +1,6 @@
 Page({
   data: {
-    preview: { char: '', pinyin: '' },
-    progressDots: [],
+    todayItems: [],
     isEmpty: false,
     notice: '',
     storageNotice: '',
@@ -35,9 +34,13 @@ Page({
     this.todayCards = cards;
 
     this.setData({
-      preview: cards[0] || { char: '好', pinyin: 'hǎo' },
-      progressDots: cards.map(function (item, index) {
-        return { id: item.char + index, state: index === 0 ? 'current' : 'waiting' };
+      todayItems: cards.map(function (item, index) {
+        return {
+          id: item.char + index,
+          index: index,
+          char: item.char,
+          pinyin: item.pinyin
+        };
       }),
       isEmpty: cards.length === 0,
       storageNotice: loadResult.ok ? '' : '手机暂时读不到记录，关掉后可能会丢失',
@@ -45,10 +48,11 @@ Page({
     });
   },
 
-  onWordTap: function () {
+  onWordTap: function (event) {
     var savedPath;
     var sources;
     var card;
+    var cardIndex;
     var map;
     var that = this;
     var audioPlayerModule;
@@ -56,7 +60,11 @@ Page({
     if (!this.todayCards || this.todayCards.length === 0) {
       return;
     }
-    card = this.todayCards[0];
+    cardIndex = Number(event.currentTarget.dataset.index);
+    if (!isFinite(cardIndex) || cardIndex < 0 || cardIndex >= this.todayCards.length) {
+      return;
+    }
+    card = this.todayCards[cardIndex];
     savedPath = this.localState.recordings[card.char];
     if (savedPath) {
       sources = [savedPath];
@@ -80,7 +88,7 @@ Page({
     });
     this.audioPlayer.play(sources, {
       onPlay: function () {
-        that.setData({ notice: '正在读“' + that.todayCards[0].char + '”' });
+        that.setData({ notice: '正在读“' + card.char + '”' });
       },
       onEnded: function () {
         that.setData({ notice: '读完了' });
