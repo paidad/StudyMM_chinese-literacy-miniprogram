@@ -18,19 +18,11 @@
   line-height: 1.4;
 }
 
-.subheading,
-.today-count,
 .notice,
 .storage-notice {
   display: block;
   font-size: 36rpx;
   line-height: 1.5;
-}
-
-.subheading {
-  margin-top: 2rpx;
-  font-size: 32rpx;
-  color: #555555;
 }
 
 .word-card,
@@ -100,13 +92,7 @@
   background: #b74712;
 }
 
-.today-count {
-  margin: 4rpx 0 12rpx;
-  font-size: 32rpx;
-}
-
-.primary-button,
-.secondary-button {
+.primary-button {
   min-height: 120rpx;
   margin: 0;
   border-radius: 24rpx;
@@ -120,15 +106,7 @@
   background: #a63e0c;
 }
 
-.secondary-button {
-  margin-top: 12rpx;
-  border: 4rpx solid #6f2a09;
-  color: #6f2a09;
-  background: #ffffff;
-}
-
-.primary-button::after,
-.secondary-button::after {
+.primary-button::after {
   border: 0;
 }
 
@@ -141,30 +119,6 @@
 
 .storage-notice {
   color: #8b1e1e;
-}
-
-.known-box {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 6rpx;
-  padding: 8rpx;
-  border-radius: 24rpx;
-  background: #f3e5ce;
-}
-
-.known-number {
-  display: inline-block;
-  margin-right: 16rpx;
-  font-size: 46rpx;
-  font-weight: bold;
-  line-height: 1.2;
-}
-
-.known-label {
-  display: inline-block;
-  font-size: 32rpx;
-  line-height: 1.5;
 }
 
 .bottom-nav {

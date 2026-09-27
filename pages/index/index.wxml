@@ -1,7 +1,6 @@
 <view class="page">
   <view class="heading">
     <text class="greeting">今天学这个</text>
-    <text class="subheading">慢慢来，听一听，看一看</text>
   </view>
 
   <view wx:if="{{!isEmpty}}" class="word-card" bindtap="onWordTap" hover-class="word-card-pressed">
@@ -18,17 +17,10 @@
   <view class="lesson-progress">
     <view wx:for="{{progressDots}}" wx:key="id" class="progress-dot progress-dot-{{item.state}}"></view>
   </view>
-  <text class="today-count">今天有 {{todayCount}} 个字词</text>
 
   <button class="primary-button" bindtap="onStartTap" hover-class="button-pressed">开始学</button>
-  <button class="secondary-button" bindtap="onReviewTap" hover-class="button-pressed">复习以前学过的字</button>
   <text class="notice">{{notice}}</text>
   <text class="storage-notice">{{storageNotice}}</text>
-
-  <view class="known-box">
-    <text class="known-number">{{knownCount}}</text>
-    <text class="known-label">已经认识的字词</text>
-  </view>
 
   <view class="bottom-nav">
     <view class="nav-item nav-item-current" bindtap="onTodayTap" hover-class="nav-item-pressed"><text class="nav-mark">●</text><text class="nav-label">今天</text></view>

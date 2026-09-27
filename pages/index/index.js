@@ -2,8 +2,6 @@ Page({
   data: {
     preview: { char: '', pinyin: '' },
     progressDots: [],
-    todayCount: 0,
-    knownCount: 0,
     isEmpty: false,
     notice: '',
     storageNotice: '',
@@ -41,8 +39,6 @@ Page({
       progressDots: cards.map(function (item, index) {
         return { id: item.char + index, state: index === 0 ? 'current' : 'waiting' };
       }),
-      todayCount: cards.length,
-      knownCount: Object.keys(this.localState.progress).length,
       isEmpty: cards.length === 0,
       storageNotice: loadResult.ok ? '' : '手机暂时读不到记录，关掉后可能会丢失',
       notice: ''
@@ -111,7 +107,7 @@ Page({
   },
 
   onTodayTap: function () {
-    this.setData({ notice: '已经在今天页面' });
+    this.setData({ notice: '' });
   },
 
   onReviewTap: function () {

@@ -1,4 +1,6 @@
 var assert = require('assert');
+var fs = require('fs');
+var path = require('path');
 var storageMemory = {};
 
 global.setTimeout = function () {
@@ -58,5 +60,12 @@ var missingWrite = loadPage('../stroke/pages/write/write.js');
 missingWrite.onLoad({ char: encodeURIComponent('㐂') });
 assert.strictEqual(missingWrite.data.hasStrokeData, false);
 assert.ok(missingWrite.data.status.indexOf('还没有笔顺动画') >= 0);
+
+var indexMarkup = fs.readFileSync(path.join(__dirname, '../pages/index/index.wxml'), 'utf8');
+assert.strictEqual(indexMarkup.indexOf('慢慢来，听一听，看一看'), -1);
+assert.strictEqual(indexMarkup.indexOf('今天有 {{todayCount}} 个字词'), -1);
+assert.strictEqual(indexMarkup.indexOf('复习以前学过的字'), -1);
+assert.strictEqual(indexMarkup.indexOf('已经认识的字词'), -1);
+assert.ok(indexMarkup.indexOf('{{notice}}') >= 0, 'important failure messages must remain visible');
 
 console.log('All page smoke tests passed.');
