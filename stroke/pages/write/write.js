@@ -19,7 +19,7 @@ Page({
     this.setData({
       char: char,
       hasStrokeData: this.strokeList.length > 0,
-      status: this.strokeList.length > 0 ? '点“再放一遍”看笔顺' : '这个字还没有笔顺动画，可以在下面照着写'
+      status: this.strokeList.length > 0 ? '点“回放”看笔顺' : '这个字还没有笔顺动画，可以在下面照着写'
     });
   },
 
@@ -170,7 +170,7 @@ Page({
       var to;
       if (that.strokeIndex >= that.strokeList.length) {
         that.setData({
-          status: that.data.showTrace ? '点上面的字重放，再在下面描一遍' : '写完了，可以再看一遍'
+          status: that.data.showTrace ? '点上面的字重放，再在下面描一遍' : '写完了，可以回放'
         });
         return;
       }

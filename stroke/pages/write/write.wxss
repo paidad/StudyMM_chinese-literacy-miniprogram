@@ -45,12 +45,23 @@
 }
 
 .write-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   min-height: 116rpx;
   margin-top: 12rpx;
   border-radius: 22rpx;
   font-size: 38rpx;
   font-weight: bold;
-  line-height: 116rpx;
+  line-height: 1.2;
+}
+
+.write-button-icon {
+  display: inline-block;
+  margin-right: 14rpx;
+  font-size: 44rpx;
+  font-weight: bold;
+  line-height: 1;
 }
 
 .primary {
@@ -65,9 +76,9 @@
 }
 
 .trace-mode-button {
-  border: 4rpx solid #8a3d1a;
-  color: #8a3d1a;
-  background: #fffdf8;
+  border: 4rpx solid #39704d;
+  color: #ffffff;
+  background: #39704d;
 }
 
 .trace-box {

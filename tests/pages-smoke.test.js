@@ -60,6 +60,7 @@ var write = loadPage('../stroke/pages/write/write.js');
 write.onLoad({ char: encodeURIComponent('一') });
 assert.strictEqual(write.data.hasStrokeData, true);
 assert.strictEqual(write.strokeList.length, 1);
+assert.strictEqual(write.data.status, '点“回放”看笔顺');
 
 var missingWrite = loadPage('../stroke/pages/write/write.js');
 missingWrite.onLoad({ char: encodeURIComponent('㐂') });
@@ -83,5 +84,11 @@ assert.ok(learnMarkup.indexOf('×</text><text>还不熟') >= 0);
 assert.ok(learnMarkup.indexOf('✓</text><text>认识了') >= 0);
 assert.ok(learnMarkup.indexOf('wx:if="{{hasSentence}}" class="sentence-button"') >= 0);
 assert.ok(/\.write-action\s*\{[^}]*border:\s*4rpx solid #a63e0c;[^}]*background:\s*#a63e0c;/m.test(learnStyles));
+
+var writeMarkup = fs.readFileSync(path.join(__dirname, '../stroke/pages/write/write.wxml'), 'utf8');
+var writeStyles = fs.readFileSync(path.join(__dirname, '../stroke/pages/write/write.wxss'), 'utf8');
+assert.ok(writeMarkup.indexOf('↻</text><text>回放') >= 0);
+assert.ok(writeMarkup.indexOf('✎</text><text>手写') >= 0);
+assert.ok(/\.trace-mode-button\s*\{[^}]*border:\s*4rpx solid #39704d;[^}]*background:\s*#39704d;/m.test(writeStyles));
 
 console.log('All page smoke tests passed.');
