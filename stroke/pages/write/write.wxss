@@ -114,13 +114,38 @@
 }
 
 .trace-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 48.5%;
   min-height: 108rpx;
   margin: 0;
   border-radius: 22rpx;
   font-size: 36rpx;
   font-weight: bold;
-  line-height: 108rpx;
+  line-height: 1.2;
+}
+
+.trace-action-icon {
+  display: inline-block;
+  margin-right: 14rpx;
+  font-size: 44rpx;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.eraser-icon {
+  width: 34rpx;
+  height: 22rpx;
+  margin-right: 16rpx;
+  border: 4rpx solid currentColor;
+  border-radius: 5rpx;
+  box-sizing: border-box;
+  transform: rotate(-35deg);
+}
+
+.trace-listen-button {
+  width: 100%;
 }
 
 .erase-action {
