@@ -19,8 +19,32 @@
         "value": "scripts"
       },
       {
+        "type": "folder",
+        "value": "docs"
+      },
+      {
+        "type": "folder",
+        "value": "README.assets"
+      },
+      {
+        "type": "folder",
+        "value": ".workbuddy-ai"
+      },
+      {
         "type": "file",
         "value": "REBUILD_PROMPT.md"
+      },
+      {
+        "type": "file",
+        "value": "README.md"
+      },
+      {
+        "type": "file",
+        "value": "LICENSE"
+      },
+      {
+        "type": "file",
+        "value": ".gitignore"
       }
     ]
   },
