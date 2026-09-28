@@ -34,6 +34,7 @@ runTest('empty storage returns a fresh state', function () {
   assert.strictEqual(result.state.testTapCount, 0);
   assert.deepStrictEqual(result.state.chars, {});
   assert.deepStrictEqual(result.state.today, { date: '', chars: [] });
+  assert.deepStrictEqual(result.state.coursePlan, { date: '', lessonIndex: 0 });
   assert.deepStrictEqual(result.state.progress, {});
   assert.deepStrictEqual(result.state.recordings, {});
   assert.deepStrictEqual(result.state.stats, {
@@ -59,6 +60,7 @@ runTest('older state gains an empty recording map without losing data', function
   assert.strictEqual(result.state.testTapCount, 7);
   assert.deepStrictEqual(result.state.recordings, {});
   assert.strictEqual(result.state.stats.streak, 0);
+  assert.deepStrictEqual(result.state.coursePlan, { date: '', lessonIndex: 0 });
 });
 
 runTest('saved state can be loaded again', function () {

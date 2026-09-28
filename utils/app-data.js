@@ -16,11 +16,65 @@ function getCard(state, course, key) {
   return state.chars[key] || course.getCardMap()[key] || null;
 }
 
+function firstUnfinishedLessonIndex(state, lessons) {
+  var lessonIndex;
+  for (lessonIndex = 0; lessonIndex < lessons.length; lessonIndex += 1) {
+    if (lessons[lessonIndex].cards.some(function (item) {
+      return !state.progress[item.char];
+    })) {
+      return lessonIndex;
+    }
+  }
+  return Math.max(lessons.length - 1, 0);
+}
+
+function ensureDailyCoursePlan(state, course, now) {
+  var lessons = course.getLessons();
+  var todayText = formatDate(now);
+  var plan = state.coursePlan;
+  var nextIndex;
+  var changed = false;
+
+  if (!plan || typeof plan.date !== 'string' || typeof plan.lessonIndex !== 'number') {
+    plan = { date: '', lessonIndex: 0 };
+    state.coursePlan = plan;
+    changed = true;
+  }
+  if (!plan.date) {
+    plan.lessonIndex = firstUnfinishedLessonIndex(state, lessons);
+    plan.date = todayText;
+    changed = true;
+  } else if (plan.date !== todayText) {
+    nextIndex = Math.max(plan.lessonIndex, 0);
+    if (dateNumber(todayText) > dateNumber(plan.date)) {
+      nextIndex = Math.min(nextIndex + 1, Math.max(lessons.length - 1, 0));
+    }
+    plan.lessonIndex = nextIndex;
+    plan.date = todayText;
+    changed = true;
+  }
+  if (plan.lessonIndex >= lessons.length) {
+    plan.lessonIndex = Math.max(lessons.length - 1, 0);
+    changed = true;
+  }
+  return { changed: changed, lessonIndex: plan.lessonIndex };
+}
+
+function setCourseLesson(state, course, lessonIndex, now) {
+  var maximum = Math.max(course.getLessons().length - 1, 0);
+  var nextIndex = Math.max(0, Math.min(Number(lessonIndex) || 0, maximum));
+  state.coursePlan = {
+    date: formatDate(now),
+    lessonIndex: nextIndex
+  };
+  return nextIndex;
+}
+
 function getTodayCards(state, course, now) {
   var todayText = formatDate(now);
   var customCards = [];
   var lessons;
-  var lessonIndex;
+  var plan;
 
   if (state.today.date === todayText) {
     state.today.chars.forEach(function (key) {
@@ -33,33 +87,19 @@ function getTodayCards(state, course, now) {
   }
 
   lessons = course.getLessons();
-  for (lessonIndex = 0; lessonIndex < lessons.length; lessonIndex += 1) {
-    var unfinished = lessons[lessonIndex].cards.filter(function (item) {
-      return !state.progress[item.char];
-    });
-    if (unfinished.length > 0) {
-      return unfinished;
-    }
-  }
-  return [];
+  plan = ensureDailyCoursePlan(state, course, now);
+  return lessons[plan.lessonIndex] ? lessons[plan.lessonIndex].cards.slice() : [];
 }
 
 function getCurrentLessonInfo(state, course) {
   var lessons = course.getLessons();
-  var lessonIndex;
-
-  for (lessonIndex = 0; lessonIndex < lessons.length; lessonIndex += 1) {
-    if (lessons[lessonIndex].cards.some(function (item) {
-      return !state.progress[item.char];
-    })) {
-      return {
-        number: lessonIndex + 1,
-        title: lessons[lessonIndex].title
-      };
-    }
+  var plan = ensureDailyCoursePlan(state, course, Date.now());
+  var lesson = lessons[plan.lessonIndex];
+  if (lesson) {
+    return { number: plan.lessonIndex + 1, title: lesson.title };
   }
   return {
-    number: lessons.length,
+    number: 0,
     title: '全部学完'
   };
 }
@@ -108,6 +148,8 @@ module.exports = {
   formatDate: formatDate,
   getCard: getCard,
   getTodayCards: getTodayCards,
+  ensureDailyCoursePlan: ensureDailyCoursePlan,
+  setCourseLesson: setCourseLesson,
   getCurrentLessonInfo: getCurrentLessonInfo,
   getTaughtCards: getTaughtCards,
   updateStreak: updateStreak

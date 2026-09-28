@@ -97,9 +97,9 @@
 
 ### 今天（首页）
 - 显示今天要学的字/词：大字 + 拼音，点一下立刻听读音。
-- 「开始学」主按钮 + 「复习以前学过的字」次按钮。
-- 显示已认识的字词数。
-- 家人当天没安排内容时，**自动接着内置课程里下一课没学完的字**。
+- 「开始学」主按钮上方有「上一课」「下一课」，可以手动切换当天的默认课程。
+- 默认课程一天固定一课；当天学完后仍停留在本课，可以再次学习，第二天才进入下一课。
+- 家人当天主动安排内容时，优先显示家人安排的内容。
 
 ### 字卡学习
 - 每张卡包含：大字/词、拼音、字形记忆提示、常用组词、例句。
@@ -263,6 +263,7 @@ git clone https://github.com/paidad/StudyMM_chinese-literacy-miniprogram.git
   version: 1,
   chars:      {},   // 字/词详情：char, pinyin, words, sentence, tip, lesson, updatedAt
   today:      {},   // { date, chars: [] }，保持家人安排的顺序
+  coursePlan: {},   // { date, lessonIndex }，当天固定的默认课程
   progress:   {},   // 以字/词为键的 SRS 进度
   recordings: {},   // 字/词 → 录音文件路径
   stats:      {}    // 连续学习天数、总学习次数

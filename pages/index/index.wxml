@@ -17,6 +17,10 @@
     </view>
   </scroll-view>
 
+  <view wx:if="{{showLessonControls}}" class="lesson-nav">
+    <button class="lesson-nav-button" bindtap="onPreviousLessonTap" hover-class="button-pressed"><text class="lesson-arrow">←</text><text>上一课</text></button>
+    <button class="lesson-nav-button" bindtap="onNextLessonTap" hover-class="button-pressed"><text>下一课</text><text class="lesson-arrow lesson-arrow-right">→</text></button>
+  </view>
   <button class="primary-button" bindtap="onStartTap" hover-class="button-pressed">开始学</button>
   <text class="notice">{{notice}}</text>
   <text class="storage-notice">{{storageNotice}}</text>

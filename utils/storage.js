@@ -8,6 +8,10 @@ function createDefaultState() {
       date: '',
       chars: []
     },
+    coursePlan: {
+      date: '',
+      lessonIndex: 0
+    },
     progress: {},
     recordings: {},
     stats: {
@@ -38,6 +42,11 @@ function isValidCoreState(value) {
 
 function isValidState(value) {
   return isValidCoreState(value) &&
+    isRecord(value.coursePlan) &&
+    typeof value.coursePlan.date === 'string' &&
+    typeof value.coursePlan.lessonIndex === 'number' &&
+    value.coursePlan.lessonIndex >= 0 &&
+    Math.floor(value.coursePlan.lessonIndex) === value.coursePlan.lessonIndex &&
     isRecord(value.recordings) &&
     isRecord(value.stats) &&
     typeof value.stats.lastStudyDate === 'string' &&
@@ -82,6 +91,17 @@ function createStorage(adapter) {
         storedValue.recordings = {};
       } else if (!isRecord(storedValue.recordings)) {
         storedValue.recordings = {};
+        recovered = true;
+      }
+
+      if (storedValue.coursePlan === undefined) {
+        storedValue.coursePlan = createDefaultState().coursePlan;
+      } else if (!isRecord(storedValue.coursePlan) ||
+        typeof storedValue.coursePlan.date !== 'string' ||
+        typeof storedValue.coursePlan.lessonIndex !== 'number' ||
+        storedValue.coursePlan.lessonIndex < 0 ||
+        Math.floor(storedValue.coursePlan.lessonIndex) !== storedValue.coursePlan.lessonIndex) {
+        storedValue.coursePlan = createDefaultState().coursePlan;
         recovered = true;
       }
 

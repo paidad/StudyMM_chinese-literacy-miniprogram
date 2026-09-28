@@ -4,7 +4,7 @@
   height: 100vh;
   overflow: hidden;
   box-sizing: border-box;
-  padding: 20rpx 30rpx 310rpx;
+  padding: 20rpx 30rpx 430rpx;
   background: #fffaf0;
   text-align: center;
 }
@@ -118,6 +118,43 @@
   font-size: 40rpx;
   font-weight: bold;
   line-height: 120rpx;
+}
+
+.lesson-nav {
+  display: flex;
+  position: fixed;
+  z-index: 18;
+  left: 30rpx;
+  right: 30rpx;
+  bottom: 310rpx;
+  justify-content: space-between;
+}
+
+.lesson-nav-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48.5%;
+  min-height: 100rpx;
+  margin: 0;
+  border: 4rpx solid #6f2a09;
+  border-radius: 22rpx;
+  color: #6f2a09;
+  background: #fffdf8;
+  font-size: 34rpx;
+  font-weight: bold;
+  line-height: 1.2;
+}
+
+.lesson-arrow {
+  margin-right: 14rpx;
+  font-size: 42rpx;
+  line-height: 1;
+}
+
+.lesson-arrow-right {
+  margin-right: 0;
+  margin-left: 14rpx;
 }
 
 .primary-button {

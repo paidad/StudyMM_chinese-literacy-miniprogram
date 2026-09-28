@@ -83,6 +83,20 @@ page.setData = function (patch) {
 
 pageConfig.onShow.call(page);
 assert.strictEqual(page.data.todayItems.length, 6);
+assert.strictEqual(page.data.showLessonControls, true);
+pageConfig.onPreviousLessonTap.call(page);
+assert.strictEqual(page.data.notice, '已经是第一课了');
+pageConfig.onNextLessonTap.call(page);
+assert.deepStrictEqual(page.data.todayItems.map(function (item) { return item.char; }), ['杯', '盘', '纸', '床', '被', '巾']);
+assert.strictEqual(page.data.notice, '已经切换到下一课');
+pageConfig.onPreviousLessonTap.call(page);
+assert.deepStrictEqual(page.data.todayItems.map(function (item) { return item.char; }), ['门', '窗', '灯', '桌', '椅', '碗']);
+page.appData.setCourseLesson(page.localState, page.course, 34, Date.now());
+page.refreshTodayView('');
+pageConfig.onNextLessonTap.call(page);
+assert.strictEqual(page.data.notice, '已经是最后一课了');
+page.appData.setCourseLesson(page.localState, page.course, 0, Date.now());
+page.refreshTodayView('');
 pageConfig.onWordTap.call(page, { currentTarget: { dataset: { index: 1 } } });
 assert.strictEqual(page.data.notice, '正在读“窗”');
 pageConfig.onStartTap.call(page);

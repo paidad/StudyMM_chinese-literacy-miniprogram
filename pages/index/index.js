@@ -2,6 +2,8 @@ Page({
   data: {
     todayItems: [],
     isEmpty: false,
+    showLessonControls: true,
+    lessonNumber: 1,
     notice: '',
     storageNotice: '',
     inputNavLabel: '录入'
@@ -14,7 +16,6 @@ Page({
     var speechData = require('../../utils/speech-data.js');
     var pinyinMap = require('../../data/pinyin.js');
     var loadResult;
-    var cards;
 
     this.course = course;
     this.appData = appData;
@@ -30,9 +31,25 @@ Page({
     });
     loadResult = this.localStore.load();
     this.localState = loadResult.state;
-    cards = appData.getTodayCards(this.localState, course, Date.now());
-    this.todayCards = cards;
+    this.planResult = appData.ensureDailyCoursePlan(this.localState, course, Date.now());
+    if (this.planResult.changed) {
+      this.localStore.save(this.localState);
+    }
+    this.refreshTodayView('');
 
+    this.setData({
+      storageNotice: loadResult.ok ? '' : '手机暂时读不到记录，关掉后可能会丢失',
+      notice: this.data.notice
+    });
+  },
+
+  refreshTodayView: function (notice) {
+    var todayText = this.appData.formatDate(Date.now());
+    var isDefaultCourse = this.localState.today.date !== todayText;
+    var cards = this.appData.getTodayCards(this.localState, this.course, Date.now());
+    var lessonIndex = this.localState.coursePlan ? this.localState.coursePlan.lessonIndex : 0;
+
+    this.todayCards = cards;
     this.setData({
       todayItems: cards.map(function (item, index) {
         return {
@@ -43,9 +60,46 @@ Page({
         };
       }),
       isEmpty: cards.length === 0,
-      storageNotice: loadResult.ok ? '' : '手机暂时读不到记录，关掉后可能会丢失',
-      notice: ''
+      showLessonControls: isDefaultCourse,
+      lessonNumber: lessonIndex + 1,
+      notice: notice || ''
     });
+  },
+
+  onPreviousLessonTap: function () {
+    var index;
+    if (!this.data.showLessonControls) { return; }
+    index = this.localState.coursePlan.lessonIndex;
+    if (index <= 0) {
+      this.setData({ notice: '已经是第一课了' });
+      return;
+    }
+    this.appData.setCourseLesson(this.localState, this.course, index - 1, Date.now());
+    if (!this.localStore.save(this.localState).ok) {
+      this.setData({ notice: '课程暂时切换不了，请再试一次' });
+      return;
+    }
+    this.destroyAudioPlayer();
+    this.refreshTodayView('已经切换到上一课');
+  },
+
+  onNextLessonTap: function () {
+    var index;
+    var lastIndex;
+    if (!this.data.showLessonControls) { return; }
+    index = this.localState.coursePlan.lessonIndex;
+    lastIndex = this.course.getLessons().length - 1;
+    if (index >= lastIndex) {
+      this.setData({ notice: '已经是最后一课了' });
+      return;
+    }
+    this.appData.setCourseLesson(this.localState, this.course, index + 1, Date.now());
+    if (!this.localStore.save(this.localState).ok) {
+      this.setData({ notice: '课程暂时切换不了，请再试一次' });
+      return;
+    }
+    this.destroyAudioPlayer();
+    this.refreshTodayView('已经切换到下一课');
   },
 
   onWordTap: function (event) {
@@ -103,7 +157,7 @@ Page({
     var that = this;
 
     if (!this.todayCards || this.todayCards.length === 0) {
-      this.setData({ notice: '内置课程已经学完了，可以让家人安排新内容' });
+      this.setData({ notice: '今天还没有学习内容，可以请家人录入' });
       return;
     }
     wx.navigateTo({
