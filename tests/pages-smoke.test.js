@@ -125,6 +125,7 @@ assert.ok(writeMarkup.indexOf('class="trace-action-icon rewrite-icon">↺</text>
 assert.ok(writeMarkup.indexOf('✓</text><text>下一个') >= 0);
 assert.ok(writeMarkup.indexOf('class="write-button listen-button trace-listen-button"') >= 0);
 assert.ok(/\.trace-mode-button\s*\{[^}]*border:\s*4rpx solid #39704d;[^}]*background:\s*#39704d;/m.test(writeStyles));
+assert.ok(/\.done-action\s*\{[^}]*border:\s*4rpx solid #39704D;[^}]*color:\s*#ffffff;[^}]*background:\s*#39704D;/m.test(writeStyles));
 assert.ok(/\.listen-button\s*\{[^}]*background:\s*transparent;/m.test(writeStyles));
 
 console.log('All page smoke tests passed.');

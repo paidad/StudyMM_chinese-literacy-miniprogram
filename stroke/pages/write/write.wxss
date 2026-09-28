@@ -148,9 +148,9 @@
 }
 
 .done-action {
-  border: 4rpx solid #39704d;
-  color: #39704d;
-  background: #fffdf8;
+  border: 4rpx solid #39704D;
+  color: #ffffff;
+  background: #39704D;
 }
 
 .pressed {
