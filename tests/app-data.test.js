@@ -6,11 +6,11 @@ var now = new Date(2026, 8, 26, 12, 0, 0).getTime();
 var state = storage.createDefaultState();
 
 var firstLesson = appData.getTodayCards(state, course, now);
-assert.deepStrictEqual(firstLesson.map(function (item) { return item.char; }), ['一', '二', '三']);
+assert.deepStrictEqual(firstLesson.map(function (item) { return item.char; }), ['门', '窗', '灯', '桌', '椅', '碗']);
 
-state.progress['一'] = { nextAt: now + 1 };
+state.progress['门'] = { nextAt: now + 1 };
 var remaining = appData.getTodayCards(state, course, now);
-assert.deepStrictEqual(remaining.map(function (item) { return item.char; }), ['二', '三']);
+assert.deepStrictEqual(remaining.map(function (item) { return item.char; }), ['窗', '灯', '桌', '椅', '碗']);
 
 state.chars['医院'] = {
   char: '医院', pinyin: 'yī yuàn', words: ['看病'],

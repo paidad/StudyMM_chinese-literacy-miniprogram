@@ -8,7 +8,7 @@ var pageConfig;
 var contexts = [];
 var state = storageModule.createDefaultState();
 
-state.recordings['一'] = '/user/family.mp3';
+state.recordings['门'] = '/user/family.mp3';
 global.Page = function (config) { pageConfig = config; };
 global.wx = {
   createInnerAudioContext: function () {
@@ -35,7 +35,7 @@ Object.keys(pageConfig).forEach(function (key) {
 page.data = JSON.parse(JSON.stringify(pageConfig.data));
 page.setData = function (patch) { Object.assign(this.data, patch); };
 page.localState = state;
-page.currentCard = course.getCardMap()['一'];
+page.currentCard = course.getCardMap()['门'];
 page.speechData = speechData;
 page.pinyinMap = pinyinMap;
 page.phraseMap = phraseMap;
@@ -46,7 +46,7 @@ assert.strictEqual(contexts[0].src, '/user/family.mp3');
 state.recordings = {};
 page.onListenTap();
 assert.strictEqual(contexts[0].destroyed, true);
-assert.strictEqual(contexts[1].src, '/audio-py/yi1.mp3');
+assert.strictEqual(contexts[1].src, '/audio-py/men2.mp3');
 
 page.playCardAudio('word', 0);
 assert.ok(/^\/study\/audio\/.+\.mp3$/.test(contexts[2].src));

@@ -80,15 +80,7 @@ Page({
 
   showCurrentCard: function () {
     var card = this.sessionCards[this.currentIndex];
-    var existing = this.localState.progress[card.char];
-    var now = Date.now();
     var that = this;
-
-    if (!existing) {
-      this.newKeys[card.char] = true;
-      this.localState.progress[card.char] = this.srs.recordFirstSeen(null, card.char, now);
-      this.saveState();
-    }
 
     this.currentCard = card;
     this.setData({
@@ -236,6 +228,12 @@ Page({
   },
 
   onKnownTap: function () {
+    var key = this.currentCard.char;
+    if (!this.localState.progress[key]) {
+      this.localState.progress[key] = this.srs.recordFirstSeen(null, key, Date.now());
+      this.newKeys[key] = true;
+      this.saveState();
+    }
     this.advanceCard();
   },
 
@@ -269,8 +267,18 @@ Page({
   },
 
   startQuiz: function () {
-    var taughtCards = this.appData.getTaughtCards(this.localState, this.course, this.originalCards);
-    this.quizQuestions = this.learningQueue.createQuizQuestions(this.originalCards, taughtCards);
+    var that = this;
+    var quizCards = this.originalCards.filter(function (item) {
+      return !!that.localState.progress[item.char];
+    });
+    var taughtCards;
+
+    if (quizCards.length === 0) {
+      this.finishSession();
+      return;
+    }
+    taughtCards = this.appData.getTaughtCards(this.localState, this.course, quizCards);
+    this.quizQuestions = this.learningQueue.createQuizQuestions(quizCards, taughtCards);
     this.quizIndex = 0;
     this.showQuizQuestion();
   },

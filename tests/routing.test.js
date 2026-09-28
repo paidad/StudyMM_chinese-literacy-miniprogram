@@ -82,9 +82,9 @@ page.setData = function (patch) {
 };
 
 pageConfig.onShow.call(page);
-assert.strictEqual(page.data.todayItems.length, 3);
+assert.strictEqual(page.data.todayItems.length, 6);
 pageConfig.onWordTap.call(page, { currentTarget: { dataset: { index: 1 } } });
-assert.strictEqual(page.data.notice, '正在读“二”');
+assert.strictEqual(page.data.notice, '正在读“窗”');
 pageConfig.onStartTap.call(page);
 assert.deepStrictEqual(navigationCalls.pop(), {
   method: 'navigateTo',

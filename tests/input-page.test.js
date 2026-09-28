@@ -44,7 +44,7 @@ function createPage() {
 
 var page = createPage();
 page.onLoad();
-assert.deepStrictEqual(page.data.todayItems.map(function (item) { return item.char; }), ['一', '二', '三']);
+assert.deepStrictEqual(page.data.todayItems.map(function (item) { return item.char; }), ['门', '窗', '灯', '桌', '椅', '碗']);
 
 page.data.rawInput = '山 河';
 page.onAddLearningTap();
