@@ -8,6 +8,8 @@ Page({
     lessonNumber: 1,
     notice: '',
     storageNotice: '',
+    centerNotice: '',
+    showCenterNotice: false,
     inputCountdown: '',
     showInputCountdown: false
   },
@@ -122,7 +124,7 @@ Page({
   onCustomCourseTap: function () {
     var customCards = this.appData.getCustomCards(this.localState, this.course);
     if (!customCards.length) {
-      this.setData({ notice: '还没有录入课程，请先录入' });
+      this.showTransientCenterNotice('还没有录入课程，请先录入');
       return;
     }
     this.appData.activateCustomCourse(this.localState, Date.now());
@@ -133,6 +135,23 @@ Page({
     }
     this.destroyAudioPlayer();
     this.refreshTodayView('');
+  },
+
+  showTransientCenterNotice: function (message) {
+    var that = this;
+    this.clearCenterNoticeTimer();
+    this.setData({ notice: '', centerNotice: message, showCenterNotice: true });
+    this.centerNoticeTimer = setTimeout(function () {
+      that.centerNoticeTimer = null;
+      that.setData({ centerNotice: '', showCenterNotice: false });
+    }, 1000);
+  },
+
+  clearCenterNoticeTimer: function () {
+    if (this.centerNoticeTimer) {
+      clearTimeout(this.centerNoticeTimer);
+      this.centerNoticeTimer = null;
+    }
   },
 
   onWordTap: function (event) {
@@ -273,6 +292,7 @@ Page({
   },
 
   onUnload: function () {
+    this.clearCenterNoticeTimer();
     this.clearInputTimer();
     this.destroyAudioPlayer();
   }

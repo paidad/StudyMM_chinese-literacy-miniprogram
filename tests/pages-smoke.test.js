@@ -91,6 +91,7 @@ assert.ok(indexMarkup.indexOf('{{item.pinyin}}') >= 0, 'each study item must sho
 assert.ok(indexMarkup.indexOf('<text class="nav-label">录入</text>') >= 0, 'input navigation label must stay unchanged');
 assert.strictEqual(indexMarkup.indexOf('{{inputNavLabel}}'), -1, 'countdown must not replace the input navigation label');
 assert.ok(indexMarkup.indexOf('wx:if="{{showInputCountdown}}" class="input-countdown-card"') >= 0);
+assert.ok(indexMarkup.indexOf('wx:if="{{showCenterNotice}}" class="center-notice-card"') >= 0);
 assert.ok(indexMarkup.indexOf('bindtap="onPreviousLessonTap"') >= 0);
 assert.ok(indexMarkup.indexOf('←</text><text>上一课') >= 0);
 assert.ok(indexMarkup.indexOf('bindtap="onNextLessonTap"') >= 0);
@@ -101,6 +102,7 @@ assert.ok(indexMarkup.indexOf('bindtap="onDefaultCourseTap"') >= 0);
 assert.ok(indexMarkup.indexOf('↩</text><text>切换到默认课程') >= 0);
 assert.ok(/\.lesson-nav\s*\{[^}]*position:\s*fixed;[^}]*bottom:\s*310rpx;/m.test(indexStyles));
 assert.ok(/\.custom-course-switch\s*\{[^}]*position:\s*fixed;[^}]*bottom:\s*430rpx;/m.test(indexStyles));
+assert.ok(/\.center-notice-card\s*\{[^}]*position:\s*fixed;[^}]*top:\s*50%;[^}]*left:\s*50%;/m.test(indexStyles));
 assert.ok(/\.default-course-button\s*\{[^}]*width:\s*100%;/m.test(indexStyles));
 
 var inputMarkup = fs.readFileSync(path.join(__dirname, '../pages/input/input.wxml'), 'utf8');

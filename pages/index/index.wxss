@@ -245,3 +245,21 @@
   line-height: 1.4;
   color: #8a6b52;
 }
+
+.center-notice-card {
+  position: fixed;
+  z-index: 110;
+  top: 50%;
+  left: 50%;
+  width: 560rpx;
+  padding: 34rpx 28rpx;
+  box-sizing: border-box;
+  border-radius: 24rpx;
+  color: #ffffff;
+  background: rgba(65, 39, 24, 0.94);
+  font-size: 36rpx;
+  font-weight: bold;
+  line-height: 1.5;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+}

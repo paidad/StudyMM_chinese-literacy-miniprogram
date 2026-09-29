@@ -167,4 +167,15 @@ assert.deepStrictEqual(navigationCalls.pop(), {
   url: '/pages/input/input'
 });
 
+page.localState.today = { date: '', chars: [] };
+page.localState.courseMode = 'default';
+pageConfig.onCustomCourseTap.call(page);
+assert.strictEqual(page.data.notice, '');
+assert.strictEqual(page.data.showCenterNotice, true);
+assert.strictEqual(page.data.centerNotice, '还没有录入课程，请先录入');
+assert.strictEqual(scheduledTimer.delay, 1000);
+scheduledTimer.callback();
+assert.strictEqual(page.data.showCenterNotice, false);
+assert.strictEqual(page.data.centerNotice, '');
+
 console.log('All routing tests passed.');
