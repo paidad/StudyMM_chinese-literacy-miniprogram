@@ -17,6 +17,9 @@
     </view>
   </scroll-view>
 
+  <view wx:if="{{showCustomCourseSwitch}}" class="custom-course-switch">
+    <button class="lesson-nav-button custom-course-button" bindtap="onCustomCourseTap" hover-class="button-pressed">切换到录入课程</button>
+  </view>
   <view wx:if="{{showLessonControls}}" class="lesson-nav">
     <button class="lesson-nav-button" bindtap="onPreviousLessonTap" hover-class="button-pressed"><text class="lesson-arrow">←</text><text>上一课</text></button>
     <button class="lesson-nav-button" bindtap="onNextLessonTap" hover-class="button-pressed"><text>下一课</text><text class="lesson-arrow lesson-arrow-right">→</text></button>

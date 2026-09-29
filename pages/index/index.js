@@ -3,6 +3,7 @@ Page({
     todayItems: [],
     isEmpty: false,
     showLessonControls: true,
+    showCustomCourseSwitch: true,
     showDefaultCourseSwitch: false,
     lessonNumber: 1,
     notice: '',
@@ -63,6 +64,7 @@ Page({
       }),
       isEmpty: cards.length === 0,
       showLessonControls: isDefaultCourse,
+      showCustomCourseSwitch: isDefaultCourse,
       showDefaultCourseSwitch: !isDefaultCourse,
       lessonNumber: lessonIndex + 1,
       notice: notice || ''
@@ -113,7 +115,23 @@ Page({
       return;
     }
     this.destroyAudioPlayer();
-    this.refreshTodayView('已切换到默认课程');
+    this.refreshTodayView('');
+  },
+
+  onCustomCourseTap: function () {
+    var customCards = this.appData.getCustomCards(this.localState, this.course);
+    if (!customCards.length) {
+      this.setData({ notice: '还没有录入课程，请先录入' });
+      return;
+    }
+    this.appData.activateCustomCourse(this.localState, Date.now());
+    if (!this.localStore.save(this.localState).ok) {
+      this.localState.courseMode = 'default';
+      this.setData({ notice: '课程暂时切换不了，请再试一次' });
+      return;
+    }
+    this.destroyAudioPlayer();
+    this.refreshTodayView('');
   },
 
   onWordTap: function (event) {
