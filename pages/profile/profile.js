@@ -25,7 +25,7 @@ Page({
       knownCount: Object.keys(state.progress).length,
       streak: state.stats.streak,
       todayCount: todayCards.length,
-      lessonText: '第 ' + lesson.number + ' 课　' + lesson.title,
+      lessonText: lesson.isCustom ? lesson.title : '第 ' + lesson.number + ' 课　' + lesson.title,
       dueCount: srs.getDueKeys(state.progress, Date.now()).length,
       notice: ''
     });

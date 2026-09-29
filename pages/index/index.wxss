@@ -146,6 +146,10 @@
   line-height: 1.2;
 }
 
+.default-course-button {
+  width: 100%;
+}
+
 .lesson-arrow {
   margin-right: 14rpx;
   font-size: 42rpx;

@@ -97,6 +97,20 @@ pageConfig.onNextLessonTap.call(page);
 assert.strictEqual(page.data.notice, '已经是最后一课了');
 page.appData.setCourseLesson(page.localState, page.course, 0, Date.now());
 page.refreshTodayView('');
+page.localState.chars['医院'] = {
+  char: '医院', pinyin: 'yī yuàn', words: ['看病'], sentence: '', tip: '', lesson: 0
+};
+page.localState.today = { date: '2026-09-01', chars: ['医院'] };
+page.localState.courseMode = 'custom';
+page.refreshTodayView('');
+assert.deepStrictEqual(page.data.todayItems.map(function (item) { return item.char; }), ['医院']);
+assert.strictEqual(page.data.showLessonControls, false);
+assert.strictEqual(page.data.showDefaultCourseSwitch, true);
+pageConfig.onDefaultCourseTap.call(page);
+assert.strictEqual(page.localState.courseMode, 'default');
+assert.strictEqual(page.data.showLessonControls, true);
+assert.strictEqual(page.data.showDefaultCourseSwitch, false);
+assert.strictEqual(page.data.notice, '已切换到默认课程');
 pageConfig.onWordTap.call(page, { currentTarget: { dataset: { index: 1 } } });
 assert.strictEqual(page.data.notice, '正在读“窗”');
 pageConfig.onStartTap.call(page);

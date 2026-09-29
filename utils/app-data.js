@@ -70,20 +70,42 @@ function setCourseLesson(state, course, lessonIndex, now) {
   return nextIndex;
 }
 
-function getTodayCards(state, course, now) {
-  var todayText = formatDate(now);
+function getCustomCards(state, course) {
   var customCards = [];
+  state.today.chars.forEach(function (key) {
+    var item = getCard(state, course, key);
+    if (item) {
+      customCards.push(item);
+    }
+  });
+  return customCards;
+}
+
+function activateCustomCourse(state, now) {
+  state.courseMode = 'custom';
+  state.today.date = formatDate(now);
+}
+
+function activateDefaultCourse(state, course, now) {
+  var lessons = course.getLessons();
+  var plan = state.coursePlan;
+  var lessonIndex;
+
+  if (!plan || typeof plan.lessonIndex !== 'number') {
+    lessonIndex = firstUnfinishedLessonIndex(state, lessons);
+  } else {
+    lessonIndex = plan.lessonIndex;
+  }
+  state.courseMode = 'default';
+  return setCourseLesson(state, course, lessonIndex, now);
+}
+
+function getTodayCards(state, course, now) {
   var lessons;
   var plan;
 
-  if (state.today.date === todayText) {
-    state.today.chars.forEach(function (key) {
-      var item = getCard(state, course, key);
-      if (item) {
-        customCards.push(item);
-      }
-    });
-    return customCards;
+  if (state.courseMode === 'custom') {
+    return getCustomCards(state, course);
   }
 
   lessons = course.getLessons();
@@ -93,6 +115,9 @@ function getTodayCards(state, course, now) {
 
 function getCurrentLessonInfo(state, course) {
   var lessons = course.getLessons();
+  if (state.courseMode === 'custom') {
+    return { number: 0, title: '录入课程', isCustom: true };
+  }
   var plan = ensureDailyCoursePlan(state, course, Date.now());
   var lesson = lessons[plan.lessonIndex];
   if (lesson) {
@@ -147,9 +172,12 @@ function updateStreak(stats, now) {
 module.exports = {
   formatDate: formatDate,
   getCard: getCard,
+  getCustomCards: getCustomCards,
   getTodayCards: getTodayCards,
   ensureDailyCoursePlan: ensureDailyCoursePlan,
   setCourseLesson: setCourseLesson,
+  activateCustomCourse: activateCustomCourse,
+  activateDefaultCourse: activateDefaultCourse,
   getCurrentLessonInfo: getCurrentLessonInfo,
   getTaughtCards: getTaughtCards,
   updateStreak: updateStreak

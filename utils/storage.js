@@ -12,6 +12,7 @@ function createDefaultState() {
       date: '',
       lessonIndex: 0
     },
+    courseMode: 'default',
     progress: {},
     recordings: {},
     stats: {
@@ -42,6 +43,7 @@ function isValidCoreState(value) {
 
 function isValidState(value) {
   return isValidCoreState(value) &&
+    (value.courseMode === 'default' || value.courseMode === 'custom') &&
     isRecord(value.coursePlan) &&
     typeof value.coursePlan.date === 'string' &&
     typeof value.coursePlan.lessonIndex === 'number' &&
@@ -102,6 +104,13 @@ function createStorage(adapter) {
         storedValue.coursePlan.lessonIndex < 0 ||
         Math.floor(storedValue.coursePlan.lessonIndex) !== storedValue.coursePlan.lessonIndex) {
         storedValue.coursePlan = createDefaultState().coursePlan;
+        recovered = true;
+      }
+
+      if (storedValue.courseMode === undefined) {
+        storedValue.courseMode = storedValue.today.chars.length > 0 ? 'custom' : 'default';
+      } else if (storedValue.courseMode !== 'default' && storedValue.courseMode !== 'custom') {
+        storedValue.courseMode = storedValue.today.chars.length > 0 ? 'custom' : 'default';
         recovered = true;
       }
 

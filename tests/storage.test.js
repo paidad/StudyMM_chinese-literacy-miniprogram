@@ -35,6 +35,7 @@ runTest('empty storage returns a fresh state', function () {
   assert.deepStrictEqual(result.state.chars, {});
   assert.deepStrictEqual(result.state.today, { date: '', chars: [] });
   assert.deepStrictEqual(result.state.coursePlan, { date: '', lessonIndex: 0 });
+  assert.strictEqual(result.state.courseMode, 'default');
   assert.deepStrictEqual(result.state.progress, {});
   assert.deepStrictEqual(result.state.recordings, {});
   assert.deepStrictEqual(result.state.stats, {
@@ -61,6 +62,25 @@ runTest('older state gains an empty recording map without losing data', function
   assert.deepStrictEqual(result.state.recordings, {});
   assert.strictEqual(result.state.stats.streak, 0);
   assert.deepStrictEqual(result.state.coursePlan, { date: '', lessonIndex: 0 });
+  assert.strictEqual(result.state.courseMode, 'default');
+});
+
+runTest('older custom tasks stay active after storage migration', function () {
+  var legacyState = {
+    version: 1,
+    chars: { '山': { char: '山' } },
+    today: { date: '2026-09-20', chars: ['山'] },
+    coursePlan: { date: '2026-09-20', lessonIndex: 3 },
+    progress: {},
+    recordings: {},
+    stats: { lastStudyDate: '', streak: 0, totalSessions: 0 },
+    testTapCount: 0
+  };
+  var store = storageModule.createStorage(createMemoryAdapter(legacyState));
+  var result = store.load();
+
+  assert.strictEqual(result.state.courseMode, 'custom');
+  assert.deepStrictEqual(result.state.today.chars, ['山']);
 });
 
 runTest('saved state can be loaded again', function () {

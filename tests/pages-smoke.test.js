@@ -92,7 +92,10 @@ assert.ok(indexMarkup.indexOf('bindtap="onPreviousLessonTap"') >= 0);
 assert.ok(indexMarkup.indexOf('←</text><text>上一课') >= 0);
 assert.ok(indexMarkup.indexOf('bindtap="onNextLessonTap"') >= 0);
 assert.ok(indexMarkup.indexOf('下一课</text><text class="lesson-arrow lesson-arrow-right">→') >= 0);
+assert.ok(indexMarkup.indexOf('bindtap="onDefaultCourseTap"') >= 0);
+assert.ok(indexMarkup.indexOf('↩</text><text>切换到默认课程') >= 0);
 assert.ok(/\.lesson-nav\s*\{[^}]*position:\s*fixed;[^}]*bottom:\s*310rpx;/m.test(indexStyles));
+assert.ok(/\.default-course-button\s*\{[^}]*width:\s*100%;/m.test(indexStyles));
 
 var inputMarkup = fs.readFileSync(path.join(__dirname, '../pages/input/input.wxml'), 'utf8');
 var inputStyles = fs.readFileSync(path.join(__dirname, '../pages/input/input.wxss'), 'utf8');

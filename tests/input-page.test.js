@@ -44,11 +44,12 @@ function createPage() {
 
 var page = createPage();
 page.onLoad();
-assert.deepStrictEqual(page.data.todayItems.map(function (item) { return item.char; }), ['门', '窗', '灯', '桌', '椅', '碗']);
+assert.deepStrictEqual(page.data.todayItems, [], 'input page lists only the saved custom course');
 
 page.data.rawInput = '山 河';
 page.onAddLearningTap();
 assert.deepStrictEqual(page.localState.today.chars, ['山', '河']);
+assert.strictEqual(page.localState.courseMode, 'custom');
 assert.strictEqual(page.data.rawInput, '');
 assert.strictEqual(page.data.todayCount, 2);
 
@@ -56,6 +57,10 @@ page.data.rawInput = '山 河';
 page.rawInputValue = '山 河';
 page.onAddLearningTap();
 assert.deepStrictEqual(page.localState.today.chars, ['山', '河'], 'duplicates must not be added twice');
+
+page.localState.today.date = '2026-09-01';
+page.refreshTodayItems();
+assert.deepStrictEqual(page.data.todayItems.map(function (item) { return item.char; }), ['山', '河'], 'custom input list must not expire');
 
 page.onSupplementTap({ currentTarget: { dataset: { char: '山' } } });
 assert.strictEqual(page.data.showSupplement, true);

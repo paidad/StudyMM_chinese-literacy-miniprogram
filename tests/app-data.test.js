@@ -26,11 +26,25 @@ state.chars['医院'] = {
   sentence: '我去医院。', tip: '两个字一起认。', lesson: 0, updatedAt: now
 };
 state.today = { date: appData.formatDate(now), chars: ['医院'] };
+appData.activateCustomCourse(state, now);
 assert.deepStrictEqual(appData.getTodayCards(state, course, now).map(function (item) {
   return item.char;
 }), ['医院']);
+assert.deepStrictEqual(appData.getTodayCards(state, course, nextDay).map(function (item) {
+  return item.char;
+}), ['医院'], 'custom course must remain active on later days');
+assert.strictEqual(state.coursePlan.lessonIndex, 0, 'custom course must pause the default lesson');
+
+appData.activateDefaultCourse(state, course, nextDay);
+assert.strictEqual(state.courseMode, 'default');
+assert.strictEqual(state.coursePlan.lessonIndex, 0, 'returning to default must keep the previous lesson');
+assert.strictEqual(state.coursePlan.date, '2026-09-27');
+assert.deepStrictEqual(appData.getTodayCards(state, course, nextDay).map(function (item) {
+  return item.char;
+}), ['门', '窗', '灯', '桌', '椅', '碗']);
 
 state.today = { date: appData.formatDate(now), chars: [] };
+appData.activateCustomCourse(state, now);
 assert.deepStrictEqual(appData.getTodayCards(state, course, now), [], 'an explicitly cleared day must stay empty');
 
 assert.deepStrictEqual(appData.updateStreak({

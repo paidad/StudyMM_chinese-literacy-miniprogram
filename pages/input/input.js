@@ -78,7 +78,7 @@ Page({
     var keys = this.inputParser.parseInput(rawInput);
     var courseMap = this.course.getCardMap();
     var todayText = this.appData.formatDate(Date.now());
-    var todayKeys = this.localState.today.date === todayText ? this.localState.today.chars.slice() : [];
+    var todayKeys = this.localState.today.chars.slice();
     var seen = {};
     var addedCount = 0;
     var that = this;
@@ -121,6 +121,7 @@ Page({
     });
 
     this.localState.today = { date: todayText, chars: todayKeys };
+    this.appData.activateCustomCourse(this.localState, Date.now());
     if (this.saveState()) {
       this.rawInputValue = '';
       this.setData({
@@ -166,7 +167,7 @@ Page({
   },
 
   refreshTodayItems: function () {
-    var cards = this.appData.getTodayCards(this.localState, this.course, Date.now());
+    var cards = this.appData.getCustomCards(this.localState, this.course);
     var recordings = this.localState.recordings;
     var activeKey = this.recordingKey;
     var isBusy = this.data.isRecording || this.data.isStarting || this.data.isSaving;
@@ -309,9 +310,7 @@ Page({
   onRemoveTodayTap: function (event) {
     var key = event.currentTarget.dataset.char;
     var todayText = this.appData.formatDate(Date.now());
-    var currentKeys = this.appData.getTodayCards(this.localState, this.course, Date.now()).map(function (item) {
-      return item.char;
-    });
+    var currentKeys = this.localState.today.chars.slice();
     this.localState.today = {
       date: todayText,
       chars: currentKeys.filter(function (item) { return item !== key; })

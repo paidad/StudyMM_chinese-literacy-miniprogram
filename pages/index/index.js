@@ -3,6 +3,7 @@ Page({
     todayItems: [],
     isEmpty: false,
     showLessonControls: true,
+    showDefaultCourseSwitch: false,
     lessonNumber: 1,
     notice: '',
     storageNotice: '',
@@ -31,9 +32,11 @@ Page({
     });
     loadResult = this.localStore.load();
     this.localState = loadResult.state;
-    this.planResult = appData.ensureDailyCoursePlan(this.localState, course, Date.now());
-    if (this.planResult.changed) {
-      this.localStore.save(this.localState);
+    if (this.localState.courseMode === 'default') {
+      this.planResult = appData.ensureDailyCoursePlan(this.localState, course, Date.now());
+      if (this.planResult.changed) {
+        this.localStore.save(this.localState);
+      }
     }
     this.refreshTodayView('');
 
@@ -44,8 +47,7 @@ Page({
   },
 
   refreshTodayView: function (notice) {
-    var todayText = this.appData.formatDate(Date.now());
-    var isDefaultCourse = this.localState.today.date !== todayText;
+    var isDefaultCourse = this.localState.courseMode === 'default';
     var cards = this.appData.getTodayCards(this.localState, this.course, Date.now());
     var lessonIndex = this.localState.coursePlan ? this.localState.coursePlan.lessonIndex : 0;
 
@@ -61,6 +63,7 @@ Page({
       }),
       isEmpty: cards.length === 0,
       showLessonControls: isDefaultCourse,
+      showDefaultCourseSwitch: !isDefaultCourse,
       lessonNumber: lessonIndex + 1,
       notice: notice || ''
     });
@@ -100,6 +103,17 @@ Page({
     }
     this.destroyAudioPlayer();
     this.refreshTodayView('已经切换到下一课');
+  },
+
+  onDefaultCourseTap: function () {
+    this.appData.activateDefaultCourse(this.localState, this.course, Date.now());
+    if (!this.localStore.save(this.localState).ok) {
+      this.localState.courseMode = 'custom';
+      this.setData({ notice: '课程暂时切换不了，请再试一次' });
+      return;
+    }
+    this.destroyAudioPlayer();
+    this.refreshTodayView('已切换到默认课程');
   },
 
   onWordTap: function (event) {
