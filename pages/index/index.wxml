@@ -35,9 +35,13 @@
     <view class="nav-item nav-item-current" bindtap="onTodayTap" hover-class="nav-item-pressed"><text class="nav-mark">●</text><text class="nav-label">今天</text></view>
     <view class="nav-item" bindtap="onReviewTap" hover-class="nav-item-pressed"><text class="nav-mark">○</text><text class="nav-label">复习</text></view>
     <view class="nav-item" bindtap="onProfileTap" hover-class="nav-item-pressed"><text class="nav-mark">○</text><text class="nav-label">我的</text></view>
-    <view class="nav-item" bindtouchstart="onInputTouchStart" bindtouchend="onInputTouchEnd" bindtouchcancel="onInputTouchEnd" hover-class="nav-item-pressed"><text class="nav-mark">○</text><text class="nav-label">{{inputNavLabel}}</text></view>
+    <view class="nav-item" bindtouchstart="onInputTouchStart" bindtouchend="onInputTouchEnd" bindtouchcancel="onInputTouchEnd" hover-class="nav-item-pressed"><text class="nav-mark">○</text><text class="nav-label">录入</text></view>
   </view>
 
   <text class="input-hold-hint">长按录入 3 秒</text>
+  <view wx:if="{{showInputCountdown}}" class="input-countdown-card">
+    <text class="input-countdown-number">{{inputCountdown}}</text>
+    <text class="input-countdown-help">继续按住</text>
+  </view>
 
 </view>

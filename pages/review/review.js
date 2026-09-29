@@ -2,7 +2,9 @@ Page({
   data: {
     dueCards: [],
     hasDue: false,
-    notice: ''
+    notice: '',
+    inputCountdown: '',
+    showInputCountdown: false
   },
 
   onShow: function () {
@@ -108,9 +110,17 @@ Page({
 
   onInputTouchStart: function () {
     var that = this;
+    var remaining = 3;
     this.clearInputTimer();
+    this.setData({ inputCountdown: '3', showInputCountdown: true });
+    this.inputCountdownTimer = setInterval(function () {
+      remaining -= 1;
+      if (remaining >= 1) {
+        that.setData({ inputCountdown: String(remaining) });
+      }
+    }, 1000);
     this.inputTimer = setTimeout(function () {
-      that.inputTimer = null;
+      that.clearInputTimer();
       that.destroyAudioPlayer();
       wx.navigateTo({
         url: '/pages/input/input',
@@ -127,6 +137,13 @@ Page({
     if (this.inputTimer) {
       clearTimeout(this.inputTimer);
       this.inputTimer = null;
+    }
+    if (this.inputCountdownTimer) {
+      clearInterval(this.inputCountdownTimer);
+      this.inputCountdownTimer = null;
+    }
+    if (this.data.showInputCountdown || this.data.inputCountdown) {
+      this.setData({ inputCountdown: '', showInputCountdown: false });
     }
   },
 

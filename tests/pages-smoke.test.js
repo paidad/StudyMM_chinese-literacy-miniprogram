@@ -88,6 +88,9 @@ assert.ok(indexMarkup.indexOf('{{notice}}') >= 0, 'important failure messages mu
 assert.ok(indexMarkup.indexOf('wx:for="{{todayItems}}"') >= 0, 'today page must list every study item');
 assert.ok(indexMarkup.indexOf('data-index="{{item.index}}"') >= 0, 'each study item must be independently clickable');
 assert.ok(indexMarkup.indexOf('{{item.pinyin}}') >= 0, 'each study item must show its pinyin');
+assert.ok(indexMarkup.indexOf('<text class="nav-label">录入</text>') >= 0, 'input navigation label must stay unchanged');
+assert.strictEqual(indexMarkup.indexOf('{{inputNavLabel}}'), -1, 'countdown must not replace the input navigation label');
+assert.ok(indexMarkup.indexOf('wx:if="{{showInputCountdown}}" class="input-countdown-card"') >= 0);
 assert.ok(indexMarkup.indexOf('bindtap="onPreviousLessonTap"') >= 0);
 assert.ok(indexMarkup.indexOf('←</text><text>上一课') >= 0);
 assert.ok(indexMarkup.indexOf('bindtap="onNextLessonTap"') >= 0);
@@ -110,6 +113,13 @@ assert.ok(inputMarkup.indexOf('bindtap="onRemoveTodayTap"') >= 0);
 assert.ok(inputMarkup.indexOf('wx:if="{{showSupplement}}" class="modal-mask"') >= 0);
 assert.ok(inputMarkup.indexOf('nav-item nav-current') >= 0);
 assert.ok(/\.bottom-nav\s*\{[^}]*position:\s*fixed;[^}]*bottom:\s*0;/m.test(inputStyles));
+
+var reviewMarkup = fs.readFileSync(path.join(__dirname, '../pages/review/review.wxml'), 'utf8');
+var profileMarkup = fs.readFileSync(path.join(__dirname, '../pages/profile/profile.wxml'), 'utf8');
+var appStyles = fs.readFileSync(path.join(__dirname, '../app.wxss'), 'utf8');
+assert.ok(reviewMarkup.indexOf('wx:if="{{showInputCountdown}}" class="input-countdown-card"') >= 0);
+assert.ok(profileMarkup.indexOf('wx:if="{{showInputCountdown}}" class="input-countdown-card"') >= 0);
+assert.ok(/\.input-countdown-card\s*\{[^}]*position:\s*fixed;[^}]*top:\s*50%;[^}]*left:\s*50%;/m.test(appStyles));
 
 var learnMarkup = fs.readFileSync(path.join(__dirname, '../study/pages/learn/learn.wxml'), 'utf8');
 var learnStyles = fs.readFileSync(path.join(__dirname, '../study/pages/learn/learn.wxss'), 'utf8');

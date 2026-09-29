@@ -142,11 +142,13 @@ assert.deepStrictEqual(navigationCalls.pop(), {
 
 pageConfig.onInputTouchStart.call(page);
 assert.strictEqual(scheduledTimer.delay, 3000);
-assert.strictEqual(page.data.inputNavLabel, '3');
+assert.strictEqual(page.data.showInputCountdown, true);
+assert.strictEqual(page.data.inputCountdown, '3');
 countdownTimer.callback();
-assert.strictEqual(page.data.inputNavLabel, '2');
+assert.strictEqual(page.data.inputCountdown, '2');
 pageConfig.onInputTouchEnd.call(page);
-assert.strictEqual(page.data.inputNavLabel, '录入');
+assert.strictEqual(page.data.showInputCountdown, false);
+assert.strictEqual(page.data.inputCountdown, '');
 if (!scheduledTimer.cleared) {
   scheduledTimer.callback();
 }
@@ -156,9 +158,10 @@ pageConfig.onInputTouchStart.call(page);
 assert.strictEqual(scheduledTimer.delay, 3000);
 countdownTimer.callback();
 countdownTimer.callback();
-assert.strictEqual(page.data.inputNavLabel, '1');
+assert.strictEqual(page.data.inputCountdown, '1');
 scheduledTimer.callback();
-assert.strictEqual(page.data.inputNavLabel, '录入');
+assert.strictEqual(page.data.showInputCountdown, false);
+assert.strictEqual(page.data.inputCountdown, '');
 assert.deepStrictEqual(navigationCalls.pop(), {
   method: 'navigateTo',
   url: '/pages/input/input'

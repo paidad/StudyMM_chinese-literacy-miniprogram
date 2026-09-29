@@ -25,4 +25,8 @@
     <view class="shared-nav-item shared-nav-current" bindtap="onProfileTap" hover-class="shared-nav-pressed"><text class="shared-nav-mark">●</text><text class="shared-nav-label">我的</text></view>
     <view class="shared-nav-item" bindtouchstart="onInputTouchStart" bindtouchend="onInputTouchEnd" bindtouchcancel="onInputTouchEnd" hover-class="shared-nav-pressed"><text class="shared-nav-mark">○</text><text class="shared-nav-label">录入</text></view>
   </view>
+  <view wx:if="{{showInputCountdown}}" class="input-countdown-card">
+    <text class="input-countdown-number">{{inputCountdown}}</text>
+    <text class="input-countdown-help">继续按住</text>
+  </view>
 </view>

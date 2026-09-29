@@ -8,7 +8,8 @@ Page({
     lessonNumber: 1,
     notice: '',
     storageNotice: '',
-    inputNavLabel: '录入'
+    inputCountdown: '',
+    showInputCountdown: false
   },
 
   onShow: function () {
@@ -227,11 +228,11 @@ Page({
     var that = this;
     var remaining = 3;
     this.clearInputTimer();
-    this.setData({ inputNavLabel: '3' });
+    this.setData({ inputCountdown: '3', showInputCountdown: true });
     this.inputCountdownTimer = setInterval(function () {
       remaining -= 1;
       if (remaining >= 1) {
-        that.setData({ inputNavLabel: String(remaining) });
+        that.setData({ inputCountdown: String(remaining) });
       }
     }, 1000);
     this.inputTimer = setTimeout(function () {
@@ -259,8 +260,8 @@ Page({
       clearInterval(this.inputCountdownTimer);
       this.inputCountdownTimer = null;
     }
-    if (this.data.inputNavLabel !== '录入') {
-      this.setData({ inputNavLabel: '录入' });
+    if (this.data.showInputCountdown || this.data.inputCountdown) {
+      this.setData({ inputCountdown: '', showInputCountdown: false });
     }
   },
 
