@@ -13,6 +13,7 @@ function createDefaultState() {
       lessonIndex: 0
     },
     courseMode: 'default',
+    writingMode: 'trace',
     progress: {},
     recordings: {},
     stats: {
@@ -44,6 +45,7 @@ function isValidCoreState(value) {
 function isValidState(value) {
   return isValidCoreState(value) &&
     (value.courseMode === 'default' || value.courseMode === 'custom') &&
+    (value.writingMode === 'blank' || value.writingMode === 'trace') &&
     isRecord(value.coursePlan) &&
     typeof value.coursePlan.date === 'string' &&
     typeof value.coursePlan.lessonIndex === 'number' &&
@@ -111,6 +113,13 @@ function createStorage(adapter) {
         storedValue.courseMode = storedValue.today.chars.length > 0 ? 'custom' : 'default';
       } else if (storedValue.courseMode !== 'default' && storedValue.courseMode !== 'custom') {
         storedValue.courseMode = storedValue.today.chars.length > 0 ? 'custom' : 'default';
+        recovered = true;
+      }
+
+      if (storedValue.writingMode === undefined) {
+        storedValue.writingMode = 'trace';
+      } else if (storedValue.writingMode !== 'blank' && storedValue.writingMode !== 'trace') {
+        storedValue.writingMode = 'trace';
         recovered = true;
       }
 

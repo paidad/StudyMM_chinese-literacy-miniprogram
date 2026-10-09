@@ -9,7 +9,13 @@ Page({
   onLoad: function (options) {
     var strokes = require('../../data/strokes.js');
     var strokeGeometry = require('../../utils/stroke-geometry.js');
+    var storageModule = require('../../../utils/storage.js');
     var char = options && options.char ? decodeURIComponent(options.char) : '';
+    var state = storageModule.createStorage({
+      get: function (key) { return wx.getStorageSync(key); },
+      set: function (key, value) { wx.setStorageSync(key, value); }
+    }).load().state;
+    this.writingMode = state.writingMode;
     this.strokeList = strokes[char] || [];
     this.strokeGeometry = strokeGeometry;
     this.referenceCanvasSize = 300;
@@ -98,13 +104,17 @@ Page({
   onTraceModeTap: function () {
     var that = this;
     this.clearAnimationTimer();
-    this.setData({ showTrace: true, status: '点上面的字重放，再在下面描一遍' }, function () {
+    this.setData({ showTrace: true, status: this.traceInstruction() }, function () {
       that.measureCanvases(function () {
         that.drawCompleteReference();
         that.drawGrid(that.traceContext, false, that.traceCanvasSize);
-        that.drawTraceGuide();
+        if (that.writingMode === 'trace') { that.drawTraceGuide(); }
       });
     });
+  },
+
+  traceInstruction: function () {
+    return this.writingMode === 'blank' ? '点上面的字重放，再在下面写一遍' : '点上面的字重放，再在下面描一遍';
   },
 
   onReferenceTap: function () {
@@ -219,7 +229,7 @@ Page({
       var to;
       if (that.strokeIndex >= that.strokeList.length) {
         that.setData({
-          status: that.data.showTrace ? '点上面的字重放，再在下面描一遍' : '写完了，可以回放'
+          status: that.data.showTrace ? that.traceInstruction() : '写完了，可以回放'
         });
         return;
       }
@@ -283,7 +293,7 @@ Page({
   onEraseTap: function () {
     this.lastTracePoint = null;
     this.drawGrid(this.traceContext, false, this.traceCanvasSize);
-    this.drawTraceGuide();
+    if (this.writingMode === 'trace') { this.drawTraceGuide(); }
     this.setData({ status: '已经擦干净，可以重新写' });
   },
 

@@ -36,6 +36,7 @@ runTest('empty storage returns a fresh state', function () {
   assert.deepStrictEqual(result.state.today, { date: '', chars: [] });
   assert.deepStrictEqual(result.state.coursePlan, { date: '', lessonIndex: 0 });
   assert.strictEqual(result.state.courseMode, 'default');
+  assert.strictEqual(result.state.writingMode, 'trace');
   assert.deepStrictEqual(result.state.progress, {});
   assert.deepStrictEqual(result.state.recordings, {});
   assert.deepStrictEqual(result.state.stats, {
@@ -63,6 +64,7 @@ runTest('older state gains an empty recording map without losing data', function
   assert.strictEqual(result.state.stats.streak, 0);
   assert.deepStrictEqual(result.state.coursePlan, { date: '', lessonIndex: 0 });
   assert.strictEqual(result.state.courseMode, 'default');
+  assert.strictEqual(result.state.writingMode, 'trace');
 });
 
 runTest('older custom tasks stay active after storage migration', function () {
@@ -91,6 +93,18 @@ runTest('saved state can be loaded again', function () {
 
   assert.strictEqual(store.save(state).ok, true);
   assert.strictEqual(store.load().state.testTapCount, 3);
+});
+
+runTest('writing preference survives reload and invalid values recover to tracing', function () {
+  var adapter = createMemoryAdapter();
+  var store = storageModule.createStorage(adapter);
+  var state = storageModule.createDefaultState();
+  state.writingMode = 'blank';
+
+  assert.strictEqual(store.save(state).ok, true);
+  assert.strictEqual(store.load().state.writingMode, 'blank');
+  state.writingMode = 'invalid';
+  assert.strictEqual(store.load().state.writingMode, 'trace');
 });
 
 runTest('damaged storage is replaced with a safe state', function () {

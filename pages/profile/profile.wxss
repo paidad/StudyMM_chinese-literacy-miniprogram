@@ -65,6 +65,70 @@
   border: 3rpx solid #7a5a35;
 }
 
+.writing-mode-box {
+  margin-top: 14rpx;
+  padding: 18rpx 22rpx;
+  border: 3rpx solid #7a5a35;
+  border-radius: 24rpx;
+  background: #ffffff;
+  text-align: left;
+}
+
+.writing-mode-title {
+  display: block;
+  margin-bottom: 12rpx;
+  font-size: 34rpx;
+  font-weight: bold;
+}
+
+.writing-mode-switch {
+  display: flex;
+  position: relative;
+  height: 86rpx;
+  border: 3rpx solid #7a5a35;
+  border-radius: 20rpx;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.writing-mode-thumb {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  border-radius: 16rpx;
+  background: #ead9bd;
+  transition: transform 180ms ease;
+}
+
+.writing-mode-thumb-right {
+  transform: translateX(100%);
+}
+
+.writing-mode-option {
+  position: relative;
+  z-index: 1;
+  width: 50%;
+  height: 86rpx;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  color: #6f2a09;
+  background: transparent;
+  font-size: 34rpx;
+  line-height: 86rpx;
+}
+
+.writing-mode-option::after {
+  border: 0;
+}
+
+.writing-mode-selected {
+  font-weight: bold;
+}
+
 .lesson-value {
   margin-top: 10rpx;
   font-size: 40rpx;

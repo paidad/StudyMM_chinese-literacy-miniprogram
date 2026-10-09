@@ -4,6 +4,7 @@ Page({
     streak: 0,
     todayCount: 0,
     lessonText: '',
+    writingMode: 'trace',
     dueCount: 0,
     notice: '',
     inputCountdown: '',
@@ -20,6 +21,8 @@ Page({
       set: function (key, value) { wx.setStorageSync(key, value); }
     });
     var state = store.load().state;
+    this.localStore = store;
+    this.localState = state;
     var lesson = appData.getCurrentLessonInfo(state, course);
     var todayCards = appData.getTodayCards(state, course, Date.now());
 
@@ -28,9 +31,25 @@ Page({
       streak: state.stats.streak,
       todayCount: todayCards.length,
       lessonText: lesson.isCustom ? lesson.title : '第 ' + lesson.number + ' 课　' + lesson.title,
+      writingMode: state.writingMode,
       dueCount: srs.getDueKeys(state.progress, Date.now()).length,
       notice: ''
     });
+  },
+
+  onWritingModeTap: function (event) {
+    var mode = event.currentTarget.dataset.mode;
+    var previousMode;
+    if (mode !== 'blank' && mode !== 'trace') { return; }
+    if (mode === this.localState.writingMode) { return; }
+    previousMode = this.localState.writingMode;
+    this.localState.writingMode = mode;
+    if (!this.localStore.save(this.localState).ok) {
+      this.localState.writingMode = previousMode;
+      this.setData({ notice: '设置暂时没保存，请再试一次' });
+      return;
+    }
+    this.setData({ writingMode: mode, notice: '' });
   },
 
   onTodayTap: function () {
