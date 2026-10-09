@@ -2,18 +2,24 @@
   height: 100vh;
   overflow: hidden;
   box-sizing: border-box;
-  padding: 8rpx 28rpx 28rpx;
+  padding: 20rpx 28rpx 28rpx;
   background: #fffaf0;
   text-align: center;
 }
 
+.write-title,
 .write-status {
   display: block;
 }
 
+.write-title {
+  font-size: 48rpx;
+  font-weight: bold;
+}
+
 .write-status {
   min-height: 54rpx;
-  margin-top: 0;
+  margin-top: 12rpx;
   font-size: 34rpx;
   line-height: 1.5;
   color: #6f2a09;
@@ -22,7 +28,7 @@
 .reference-box {
   width: 600rpx;
   height: 600rpx;
-  margin: 6rpx auto 0;
+  margin: 10rpx auto 0;
   border: 4rpx solid #333333;
   background: #ffffff;
   box-sizing: border-box;
@@ -90,7 +96,7 @@
 .trace-box {
   width: 700rpx;
   height: 700rpx;
-  margin: 8rpx auto 0;
+  margin: 10rpx auto 0;
   border: 4rpx solid #333333;
   box-sizing: border-box;
   background: #ffffff;
@@ -139,12 +145,13 @@
 .writing-mode-switch {
   display: flex;
   position: relative;
-  height: 84rpx;
-  margin-top: 12rpx;
-  border: 3rpx solid #7a5a35;
-  border-radius: 20rpx;
+  width: 86%;
+  height: 64rpx;
+  margin: 24rpx auto 0;
+  border: 2rpx solid #c9bda9;
+  border-radius: 16rpx;
   overflow: hidden;
-  background: #ffffff;
+  background: #fffdf9;
 }
 
 .writing-mode-thumb {
@@ -153,8 +160,8 @@
   left: 0;
   width: 50%;
   height: 100%;
-  border-radius: 16rpx;
-  background: #ead9bd;
+  border-radius: 14rpx;
+  background: #f0e5d1;
   transition: transform 180ms ease;
 }
 
@@ -166,15 +173,15 @@
   position: relative;
   z-index: 1;
   width: 50%;
-  height: 84rpx;
+  height: 64rpx;
   margin: 0;
   padding: 0;
   border: 0;
   border-radius: 0;
-  color: #6f2a09;
+  color: #765b42;
   background: transparent;
-  font-size: 34rpx;
-  line-height: 84rpx;
+  font-size: 30rpx;
+  line-height: 64rpx;
 }
 
 .writing-mode-option::after {
@@ -202,4 +209,61 @@
 
 button::after {
   border: 0;
+}
+
+@media screen and (max-height: 850px) {
+  .write-page {
+    padding-top: 12rpx;
+    padding-bottom: 16rpx;
+  }
+
+  .write-title {
+    font-size: 42rpx;
+  }
+
+  .write-status {
+    min-height: 46rpx;
+    margin-top: 6rpx;
+    font-size: 30rpx;
+  }
+
+  .reference-box {
+    width: 520rpx;
+    height: 520rpx;
+    margin-top: 6rpx;
+  }
+
+  .reference-box-small {
+    width: 160rpx;
+    height: 160rpx;
+  }
+
+  .trace-box {
+    width: 520rpx;
+    height: 520rpx;
+    margin-top: 6rpx;
+  }
+
+  .write-button {
+    min-height: 96rpx;
+    margin-top: 8rpx;
+  }
+
+  .trace-actions {
+    margin-top: 6rpx;
+  }
+
+  .trace-action {
+    min-height: 88rpx;
+  }
+
+  .writing-mode-switch {
+    height: 58rpx;
+    margin-top: 16rpx;
+  }
+
+  .writing-mode-option {
+    height: 58rpx;
+    line-height: 58rpx;
+  }
 }

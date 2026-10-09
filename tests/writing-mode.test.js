@@ -30,7 +30,8 @@ var writeMarkup = fs.readFileSync(path.join(__dirname, '../stroke/pages/write/wr
 var speakerPosition = writeMarkup.indexOf('trace-listen-button');
 var switchPosition = writeMarkup.indexOf('class="writing-mode-switch"');
 assert.ok(speakerPosition >= 0 && switchPosition > speakerPosition, 'mode switch belongs below the tracing speaker');
-assert.strictEqual(writeMarkup.indexOf('class="write-title"'), -1, 'the large heading should be removed');
+assert.ok(writeMarkup.indexOf('<text class="write-title">看“{{char}}”怎么写</text>') >= 0,
+  'both writing states should retain the original heading');
 
 function checkInitialMode(mode, expectedGuideCount) {
   storageState.writingMode = mode;

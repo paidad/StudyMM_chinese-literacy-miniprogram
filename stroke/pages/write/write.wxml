@@ -1,4 +1,5 @@
 <view class="write-page">
+  <text class="write-title">看“{{char}}”怎么写</text>
   <text class="write-status">{{status}}</text>
 
   <view class="reference-box {{showTrace ? 'reference-box-small' : ''}}">
