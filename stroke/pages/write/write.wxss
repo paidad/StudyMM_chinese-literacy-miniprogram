@@ -2,24 +2,18 @@
   height: 100vh;
   overflow: hidden;
   box-sizing: border-box;
-  padding: 20rpx 28rpx 54rpx;
+  padding: 8rpx 28rpx 28rpx;
   background: #fffaf0;
   text-align: center;
 }
 
-.write-title,
 .write-status {
   display: block;
 }
 
-.write-title {
-  font-size: 48rpx;
-  font-weight: bold;
-}
-
 .write-status {
   min-height: 54rpx;
-  margin-top: 12rpx;
+  margin-top: 0;
   font-size: 34rpx;
   line-height: 1.5;
   color: #6f2a09;
@@ -28,7 +22,7 @@
 .reference-box {
   width: 600rpx;
   height: 600rpx;
-  margin: 10rpx auto 0;
+  margin: 6rpx auto 0;
   border: 4rpx solid #333333;
   background: #ffffff;
   box-sizing: border-box;
@@ -96,7 +90,7 @@
 .trace-box {
   width: 700rpx;
   height: 700rpx;
-  margin: 10rpx auto 0;
+  margin: 8rpx auto 0;
   border: 4rpx solid #333333;
   box-sizing: border-box;
   background: #ffffff;
@@ -140,6 +134,55 @@
 
 .trace-listen-button {
   width: 100%;
+}
+
+.writing-mode-switch {
+  display: flex;
+  position: relative;
+  height: 84rpx;
+  margin-top: 12rpx;
+  border: 3rpx solid #7a5a35;
+  border-radius: 20rpx;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.writing-mode-thumb {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  border-radius: 16rpx;
+  background: #ead9bd;
+  transition: transform 180ms ease;
+}
+
+.writing-mode-thumb-right {
+  transform: translateX(100%);
+}
+
+.writing-mode-option {
+  position: relative;
+  z-index: 1;
+  width: 50%;
+  height: 84rpx;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  color: #6f2a09;
+  background: transparent;
+  font-size: 34rpx;
+  line-height: 84rpx;
+}
+
+.writing-mode-option::after {
+  border: 0;
+}
+
+.writing-mode-selected {
+  font-weight: bold;
 }
 
 .erase-action {

@@ -3,6 +3,7 @@ Page({
     char: '',
     hasStrokeData: false,
     showTrace: false,
+    writingMode: 'trace',
     status: ''
   },
 
@@ -11,11 +12,13 @@ Page({
     var strokeGeometry = require('../../utils/stroke-geometry.js');
     var storageModule = require('../../../utils/storage.js');
     var char = options && options.char ? decodeURIComponent(options.char) : '';
-    var state = storageModule.createStorage({
+    this.localStore = storageModule.createStorage({
       get: function (key) { return wx.getStorageSync(key); },
       set: function (key, value) { wx.setStorageSync(key, value); }
-    }).load().state;
-    this.writingMode = state.writingMode;
+    });
+    this.localState = this.localStore.load().state;
+    this.writingMode = this.localState.writingMode;
+    this.traceSegments = [];
     this.strokeList = strokes[char] || [];
     this.strokeGeometry = strokeGeometry;
     this.referenceCanvasSize = 300;
@@ -25,6 +28,7 @@ Page({
     this.setData({
       char: char,
       hasStrokeData: this.strokeList.length > 0,
+      writingMode: this.writingMode,
       status: this.strokeList.length > 0 ? '点“回放”看笔顺' : '这个字还没有笔顺动画，可以在下面照着写'
     });
   },
@@ -104,13 +108,55 @@ Page({
   onTraceModeTap: function () {
     var that = this;
     this.clearAnimationTimer();
+    this.traceSegments = [];
     this.setData({ showTrace: true, status: this.traceInstruction() }, function () {
       that.measureCanvases(function () {
         that.drawCompleteReference();
-        that.drawGrid(that.traceContext, false, that.traceCanvasSize);
-        if (that.writingMode === 'trace') { that.drawTraceGuide(); }
+        that.renderTraceCanvas();
       });
     });
+  },
+
+  onWritingModeTap: function (event) {
+    var mode = event.currentTarget.dataset.mode;
+    var previousMode;
+    var that = this;
+    if (mode !== 'blank' && mode !== 'trace') { return; }
+    if (mode === this.writingMode) { return; }
+    previousMode = this.writingMode;
+    this.localState.writingMode = mode;
+    if (!this.localStore.save(this.localState).ok) {
+      this.localState.writingMode = previousMode;
+      this.setData({ status: '设置暂时没保存，请再试一次' });
+      return;
+    }
+    this.writingMode = mode;
+    this.lastTracePoint = null;
+    this.setData({ writingMode: mode, status: this.traceInstruction() }, function () {
+      that.renderTraceCanvas();
+    });
+  },
+
+  renderTraceCanvas: function () {
+    this.drawGrid(this.traceContext, false, this.traceCanvasSize);
+    if (this.writingMode === 'trace') { this.drawTraceGuide(); }
+    this.redrawTraceSegments();
+  },
+
+  redrawTraceSegments: function () {
+    var context = this.traceContext;
+    var segments = this.traceSegments || [];
+    if (!context || !segments.length) { return; }
+    context.setStrokeStyle('#27633d');
+    context.setLineWidth(14);
+    context.setLineCap('round');
+    segments.forEach(function (segment) {
+      context.beginPath();
+      context.moveTo(segment.from.x, segment.from.y);
+      context.lineTo(segment.to.x, segment.to.y);
+      context.stroke();
+    });
+    context.draw(true);
   },
 
   traceInstruction: function () {
@@ -272,14 +318,20 @@ Page({
 
   onTraceMove: function (event) {
     var touch = event.touches[0];
+    var from;
     if (!this.lastTracePoint) {
       return;
     }
+    from = this.lastTracePoint;
+    this.traceSegments.push({
+      from: { x: from.x, y: from.y },
+      to: { x: touch.x, y: touch.y }
+    });
     this.traceContext.setStrokeStyle('#27633d');
     this.traceContext.setLineWidth(14);
     this.traceContext.setLineCap('round');
     this.traceContext.beginPath();
-    this.traceContext.moveTo(this.lastTracePoint.x, this.lastTracePoint.y);
+    this.traceContext.moveTo(from.x, from.y);
     this.traceContext.lineTo(touch.x, touch.y);
     this.traceContext.stroke();
     this.traceContext.draw(true);
@@ -292,8 +344,8 @@ Page({
 
   onEraseTap: function () {
     this.lastTracePoint = null;
-    this.drawGrid(this.traceContext, false, this.traceCanvasSize);
-    if (this.writingMode === 'trace') { this.drawTraceGuide(); }
+    this.traceSegments = [];
+    this.renderTraceCanvas();
     this.setData({ status: '已经擦干净，可以重新写' });
   },
 

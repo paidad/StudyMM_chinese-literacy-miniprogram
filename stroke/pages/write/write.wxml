@@ -1,5 +1,4 @@
 <view class="write-page">
-  <text class="write-title">看“{{char}}”怎么写</text>
   <text class="write-status">{{status}}</text>
 
   <view class="reference-box {{showTrace ? 'reference-box-small' : ''}}">
@@ -16,4 +15,9 @@
     <button class="trace-action done-action" bindtap="onDoneTap" hover-class="pressed"><text class="trace-action-icon">✓</text><text>下一个</text></button>
   </view>
   <button wx:if="{{showTrace}}" class="write-button listen-button trace-listen-button" bindtap="onSpeakerTap" hover-class="pressed" aria-label="听发音"><text class="speaker-icon">🔊</text></button>
+  <view wx:if="{{showTrace}}" class="writing-mode-switch">
+    <view class="writing-mode-thumb {{writingMode === 'trace' ? 'writing-mode-thumb-right' : ''}}"></view>
+    <button class="writing-mode-option {{writingMode === 'blank' ? 'writing-mode-selected' : ''}}" data-mode="blank" bindtap="onWritingModeTap" aria-label="空白田字格">空白</button>
+    <button class="writing-mode-option {{writingMode === 'trace' ? 'writing-mode-selected' : ''}}" data-mode="trace" bindtap="onWritingModeTap" aria-label="临摹田字格">临摹</button>
+  </view>
 </view>
