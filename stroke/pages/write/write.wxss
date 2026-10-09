@@ -94,8 +94,8 @@
 }
 
 .trace-box {
-  width: 700rpx;
-  height: 700rpx;
+  width: 100%;
+  height: 694rpx;
   margin: 10rpx auto 0;
   border: 4rpx solid #333333;
   box-sizing: border-box;
@@ -239,8 +239,6 @@ button::after {
   }
 
   .trace-box {
-    width: 520rpx;
-    height: 520rpx;
     margin-top: 6rpx;
   }
 
