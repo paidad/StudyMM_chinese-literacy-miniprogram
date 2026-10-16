@@ -37,7 +37,7 @@
   <view class="bottom-nav">
     <view class="nav-item" bindtap="onTodayTap" hover-class="nav-pressed"><text class="nav-mark">○</text><text class="nav-label">今天</text></view>
     <view class="nav-item" bindtap="onReviewTap" hover-class="nav-pressed"><text class="nav-mark">○</text><text class="nav-label">复习</text></view>
-    <view class="nav-item" bindtap="onProfileTap" hover-class="nav-pressed"><text class="nav-mark">○</text><text class="nav-label">我的</text></view>
+    <view class="nav-item" bindtap="onProfileTap" hover-class="nav-pressed"><text class="nav-mark">○</text><text class="nav-label">已录</text></view>
     <view class="nav-item nav-current"><text class="nav-mark">●</text><text class="nav-label">录入</text></view>
   </view>
 

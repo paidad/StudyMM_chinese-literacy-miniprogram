@@ -1,4 +1,5 @@
 var STORAGE_KEY = 'mama_literacy_state_v1';
+var DEFAULT_COURSE_REVISION = 2;
 
 function createDefaultState() {
   return {
@@ -12,10 +13,12 @@ function createDefaultState() {
       date: '',
       lessonIndex: 0
     },
+    defaultCourseRevision: DEFAULT_COURSE_REVISION,
     courseMode: 'default',
     writingMode: 'trace',
     progress: {},
     recordings: {},
+    hiddenRecorded: {},
     stats: {
       lastStudyDate: '',
       streak: 0,
@@ -47,11 +50,13 @@ function isValidState(value) {
     (value.courseMode === 'default' || value.courseMode === 'custom') &&
     (value.writingMode === 'blank' || value.writingMode === 'trace') &&
     isRecord(value.coursePlan) &&
+    value.defaultCourseRevision === DEFAULT_COURSE_REVISION &&
     typeof value.coursePlan.date === 'string' &&
     typeof value.coursePlan.lessonIndex === 'number' &&
     value.coursePlan.lessonIndex >= 0 &&
     Math.floor(value.coursePlan.lessonIndex) === value.coursePlan.lessonIndex &&
     isRecord(value.recordings) &&
+    isRecord(value.hiddenRecorded) &&
     isRecord(value.stats) &&
     typeof value.stats.lastStudyDate === 'string' &&
     typeof value.stats.streak === 'number' &&
@@ -90,11 +95,17 @@ function createStorage(adapter) {
       }
 
       var recovered = false;
+      var courseMigrated = false;
 
       if (storedValue.recordings === undefined) {
         storedValue.recordings = {};
       } else if (!isRecord(storedValue.recordings)) {
         storedValue.recordings = {};
+        recovered = true;
+      }
+
+      if (!isRecord(storedValue.hiddenRecorded)) {
+        storedValue.hiddenRecorded = {};
         recovered = true;
       }
 
@@ -107,6 +118,15 @@ function createStorage(adapter) {
         Math.floor(storedValue.coursePlan.lessonIndex) !== storedValue.coursePlan.lessonIndex) {
         storedValue.coursePlan = createDefaultState().coursePlan;
         recovered = true;
+      }
+
+      // The 30-lesson course has a different order. Reset only its selected
+      // lesson; keep recognition progress, custom tasks, and recordings.
+      if (storedValue.defaultCourseRevision !== DEFAULT_COURSE_REVISION) {
+        storedValue.coursePlan = { date: '', lessonIndex: 0 };
+        storedValue.defaultCourseRevision = DEFAULT_COURSE_REVISION;
+        recovered = true;
+        courseMigrated = true;
       }
 
       if (storedValue.courseMode === undefined) {
@@ -131,6 +151,16 @@ function createStorage(adapter) {
         typeof storedValue.stats.totalSessions !== 'number') {
         storedValue.stats = createDefaultState().stats;
         recovered = true;
+      }
+
+      // Persist the version marker immediately: a restored non-home page may
+      // load before the homepage, and the one-time reset must still stick.
+      if (courseMigrated) {
+        try {
+          adapter.set(STORAGE_KEY, storedValue);
+        } catch (error) {
+          return { ok: false, recovered: true, state: storedValue };
+        }
       }
 
       return {

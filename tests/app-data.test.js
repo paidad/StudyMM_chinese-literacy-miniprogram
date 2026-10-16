@@ -6,20 +6,24 @@ var now = new Date(2026, 8, 26, 12, 0, 0).getTime();
 var state = storage.createDefaultState();
 
 var firstLesson = appData.getTodayCards(state, course, now);
-assert.deepStrictEqual(firstLesson.map(function (item) { return item.char; }), ['门', '窗', '灯', '桌', '椅', '碗']);
+assert.deepStrictEqual(firstLesson.map(function (item) { return item.char; }), ['一', '二', '三', '十', '人', '口', '我']);
 assert.deepStrictEqual(state.coursePlan, { date: '2026-09-26', lessonIndex: 0 });
 
 firstLesson.forEach(function (item) { state.progress[item.char] = { nextAt: now + 1 }; });
 var sameLesson = appData.getTodayCards(state, course, now);
-assert.deepStrictEqual(sameLesson.map(function (item) { return item.char; }), ['门', '窗', '灯', '桌', '椅', '碗'], 'today stays on the same full lesson after learning');
+assert.deepStrictEqual(sameLesson.map(function (item) { return item.char; }), ['一', '二', '三', '十', '人', '口', '我'], 'completed lesson stays selected');
 
 var nextDay = now + 24 * 60 * 60 * 1000;
-var secondLesson = appData.getTodayCards(state, course, nextDay);
-assert.deepStrictEqual(secondLesson.map(function (item) { return item.char; }), ['杯', '盘', '纸', '床', '被', '巾']);
-assert.strictEqual(state.coursePlan.lessonIndex, 1);
+var secondDayLesson = appData.getTodayCards(state, course, nextDay);
+assert.deepStrictEqual(secondDayLesson.map(function (item) { return item.char; }), ['一', '二', '三', '十', '人', '口', '我']);
+assert.strictEqual(state.coursePlan.lessonIndex, 0, 'a new day must not change lessons');
+
+appData.setCourseLesson(state, course, 1, nextDay);
+assert.deepStrictEqual(appData.getTodayCards(state, course, nextDay).map(function (item) { return item.char; }), ['大', '小', '多', '少', '上', '下', '中']);
+assert.strictEqual(appData.getTodayCards(state, course, nextDay + 24 * 60 * 60 * 1000)[0].char, '大', 'manually chosen lesson remains selected');
 
 appData.setCourseLesson(state, course, 0, nextDay);
-assert.deepStrictEqual(appData.getTodayCards(state, course, nextDay).map(function (item) { return item.char; }), ['门', '窗', '灯', '桌', '椅', '碗']);
+assert.deepStrictEqual(appData.getTodayCards(state, course, nextDay).map(function (item) { return item.char; }), ['一', '二', '三', '十', '人', '口', '我']);
 
 state.chars['医院'] = {
   char: '医院', pinyin: 'yī yuàn', words: ['看病'],
@@ -41,7 +45,7 @@ assert.strictEqual(state.coursePlan.lessonIndex, 0, 'returning to default must k
 assert.strictEqual(state.coursePlan.date, '2026-09-27');
 assert.deepStrictEqual(appData.getTodayCards(state, course, nextDay).map(function (item) {
   return item.char;
-}), ['门', '窗', '灯', '桌', '椅', '碗']);
+}), ['一', '二', '三', '十', '人', '口', '我']);
 
 state.today = { date: appData.formatDate(now), chars: [] };
 appData.activateCustomCourse(state, now);

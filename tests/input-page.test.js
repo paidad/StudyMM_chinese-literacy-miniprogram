@@ -52,6 +52,7 @@ assert.deepStrictEqual(page.localState.today.chars, ['山', '河']);
 assert.strictEqual(page.localState.courseMode, 'custom');
 assert.strictEqual(page.data.rawInput, '');
 assert.strictEqual(page.data.todayCount, 2);
+assert.ok(page.localState.chars['山'].lastInputAt > 0, 'input timestamp supports archive ordering');
 
 page.data.rawInput = '山 河';
 page.rawInputValue = '山 河';
@@ -78,6 +79,13 @@ page.onRemoveTodayTap({ currentTarget: { dataset: { char: '山' } } });
 assert.deepStrictEqual(page.localState.today.chars, ['河']);
 assert.strictEqual(page.localState.recordings['山'], '/user/mountain.mp3', 'removing a task must retain its recording');
 assert.strictEqual(page.localState.chars['山'].hasSupplement, true, 'removing a task must retain supplements');
+
+page.localState.hiddenRecorded['山'] = true;
+page.data.rawInput = '山';
+page.rawInputValue = '山';
+page.onAddLearningTap();
+assert.strictEqual(page.localState.hiddenRecorded['山'], undefined, 're-entering restores an archived word');
+assert.deepStrictEqual(page.localState.today.chars, ['河', '山']);
 
 page.onClearTodayTap();
 assert.deepStrictEqual(page.localState.today.chars, []);

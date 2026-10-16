@@ -82,16 +82,16 @@ page.setData = function (patch) {
 };
 
 pageConfig.onShow.call(page);
-assert.strictEqual(page.data.todayItems.length, 6);
+assert.strictEqual(page.data.todayItems.length, 7);
 assert.strictEqual(page.data.showLessonControls, true);
 pageConfig.onPreviousLessonTap.call(page);
 assert.strictEqual(page.data.notice, '已经是第一课了');
 pageConfig.onNextLessonTap.call(page);
-assert.deepStrictEqual(page.data.todayItems.map(function (item) { return item.char; }), ['杯', '盘', '纸', '床', '被', '巾']);
+assert.deepStrictEqual(page.data.todayItems.map(function (item) { return item.char; }), ['大', '小', '多', '少', '上', '下', '中']);
 assert.strictEqual(page.data.notice, '已经切换到下一课');
 pageConfig.onPreviousLessonTap.call(page);
-assert.deepStrictEqual(page.data.todayItems.map(function (item) { return item.char; }), ['门', '窗', '灯', '桌', '椅', '碗']);
-page.appData.setCourseLesson(page.localState, page.course, 34, Date.now());
+assert.deepStrictEqual(page.data.todayItems.map(function (item) { return item.char; }), ['一', '二', '三', '十', '人', '口', '我']);
+page.appData.setCourseLesson(page.localState, page.course, 29, Date.now());
 page.refreshTodayView('');
 pageConfig.onNextLessonTap.call(page);
 assert.strictEqual(page.data.notice, '已经是最后一课了');
@@ -121,7 +121,7 @@ assert.strictEqual(page.data.showDefaultCourseSwitch, true);
 assert.strictEqual(page.data.notice, '');
 pageConfig.onDefaultCourseTap.call(page);
 pageConfig.onWordTap.call(page, { currentTarget: { dataset: { index: 1 } } });
-assert.strictEqual(page.data.notice, '正在读“窗”');
+assert.strictEqual(page.data.notice, '正在读“二”');
 pageConfig.onStartTap.call(page);
 assert.deepStrictEqual(navigationCalls.pop(), {
   method: 'navigateTo',

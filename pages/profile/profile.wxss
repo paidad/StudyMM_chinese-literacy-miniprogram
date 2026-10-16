@@ -1,94 +1,144 @@
 .profile-page {
+  display: flex;
+  flex-direction: column;
   height: 100vh;
   overflow: hidden;
   box-sizing: border-box;
-  padding: 24rpx 32rpx 170rpx;
+  padding: 20rpx 30rpx 120rpx;
   background: #fffaf0;
   text-align: center;
 }
 
-.profile-title,
-.stat-number,
-.stat-label,
-.lesson-label,
-.lesson-value,
-.warning-title,
-.warning-text,
-.profile-notice {
-  display: block;
+.recorded-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 72rpx;
+  margin-bottom: 10rpx;
 }
 
 .profile-title {
-  font-size: 48rpx;
+  font-size: 44rpx;
   font-weight: bold;
+  line-height: 1.3;
 }
 
-.stat-grid {
+.organize-link {
+  padding: 14rpx 10rpx;
+  color: #8a6b52;
+  font-size: 30rpx;
+}
+
+.recorded-scroll {
+  flex: 1;
+  min-height: 0;
+}
+
+.recorded-grid {
   display: flex;
   flex-wrap: wrap;
-  margin-top: 14rpx;
+  align-content: flex-start;
+  justify-content: center;
+  padding: 4rpx 0 16rpx;
 }
 
-.stat-card {
-  width: 46%;
-  margin: 7rpx 2%;
-  padding: 16rpx 10rpx;
+.recorded-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 210rpx;
+  height: 210rpx;
+  margin: 9rpx;
+  padding: 10rpx;
   box-sizing: border-box;
-  border: 3rpx solid #7a5a35;
-  border-radius: 22rpx;
-  background: #ffffff;
-}
-
-.stat-number {
-  font-size: 54rpx;
-  font-weight: bold;
-  line-height: 1.2;
-}
-
-.stat-label,
-.lesson-label,
-.warning-text,
-.profile-notice {
-  font-size: 34rpx;
-  line-height: 1.5;
-}
-
-.lesson-box,
-.warning-box {
-  margin-top: 14rpx;
-  padding: 18rpx 22rpx;
+  border: 4rpx solid #222222;
   border-radius: 24rpx;
   background: #ffffff;
+  box-shadow: 0 7rpx 0 #eadfca;
 }
 
-.lesson-box {
-  border: 3rpx solid #7a5a35;
+.recorded-card-selected {
+  border-color: #39704d;
+  background: #eff7ef;
 }
 
-.lesson-value {
-  margin-top: 10rpx;
-  font-size: 40rpx;
-  font-weight: bold;
+.recorded-card-pressed {
+  opacity: 0.65;
 }
 
-.warning-box {
-  border: 3rpx solid #a64b32;
-  text-align: left;
+.recorded-pinyin {
+  display: block;
+  width: 100%;
+  max-height: 60rpx;
+  overflow: hidden;
+  color: #555555;
+  font-size: 26rpx;
+  line-height: 1.15;
+  word-break: break-all;
 }
 
-.warning-title {
-  font-size: 38rpx;
-  font-weight: bold;
-  color: #8b1e1e;
-}
-
-.warning-text {
+.recorded-character {
+  display: block;
+  width: 100%;
+  max-height: 130rpx;
+  overflow: hidden;
   margin-top: 4rpx;
-  color: #444444;
+  font-size: 82rpx;
+  font-weight: bold;
+  line-height: 1.05;
+  word-break: break-all;
+}
+
+.recorded-text-medium {
+  font-size: 56rpx;
+}
+
+.recorded-text-long {
+  font-size: 40rpx;
+}
+
+.recorded-text-very-long {
+  font-size: 30rpx;
+}
+
+.selection-mark {
+  position: absolute;
+  top: 2rpx;
+  right: 9rpx;
+  color: #39704d;
+  font-size: 34rpx;
+  font-weight: bold;
+}
+
+.recorded-empty {
+  padding: 80rpx 20rpx;
+  color: #6b6156;
+  font-size: 34rpx;
+}
+
+.organize-actions {
+  padding: 12rpx 0;
+}
+
+.remove-selected-button {
+  min-height: 82rpx;
+  border: 3rpx solid #8b3b22;
+  border-radius: 18rpx;
+  color: #8b3b22;
+  background: #fffdf8;
+  font-size: 32rpx;
+  line-height: 82rpx;
+}
+
+.remove-selected-button[disabled] {
+  opacity: 0.45;
 }
 
 .profile-notice {
   min-height: 0;
-  margin-top: 6rpx;
   color: #8b1e1e;
+  font-size: 30rpx;
+  line-height: 1.4;
 }

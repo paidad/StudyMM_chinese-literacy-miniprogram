@@ -53,14 +53,13 @@ assert.strictEqual(review.data.hasDue, false);
 
 var profile = loadPage('../pages/profile/profile.js');
 profile.onShow();
-assert.strictEqual(profile.data.knownCount, 0);
-assert.ok(/^第 1 课/.test(profile.data.lessonText));
+assert.strictEqual(profile.data.recordedCount, 0);
 
 var learn = loadPage('../study/pages/learn/learn.js');
 learn.onLoad({ mode: 'today' });
 assert.strictEqual(learn.data.showCard, true);
-assert.strictEqual(learn.data.card.char, '门');
-assert.strictEqual(learn.originalCards.length, 6);
+assert.strictEqual(learn.data.card.char, '一');
+assert.strictEqual(learn.originalCards.length, 7);
 assert.strictEqual(learn.data.hasSentence, true);
 assert.strictEqual(learn.shouldShowSentence(''), false);
 assert.strictEqual(learn.shouldShowSentence('   '), false);
@@ -121,6 +120,9 @@ var profileMarkup = fs.readFileSync(path.join(__dirname, '../pages/profile/profi
 var appStyles = fs.readFileSync(path.join(__dirname, '../app.wxss'), 'utf8');
 assert.ok(reviewMarkup.indexOf('wx:if="{{showInputCountdown}}" class="input-countdown-card"') >= 0);
 assert.ok(profileMarkup.indexOf('wx:if="{{showInputCountdown}}" class="input-countdown-card"') >= 0);
+assert.ok(profileMarkup.indexOf('bindtap="onRecordedTap"') >= 0);
+assert.ok(profileMarkup.indexOf('bindtap="onOrganizeTap"') >= 0);
+assert.ok(profileMarkup.indexOf('<text class="shared-nav-label">已录</text>') >= 0);
 assert.ok(/\.input-countdown-card\s*\{[^}]*position:\s*fixed;[^}]*top:\s*50%;[^}]*left:\s*50%;/m.test(appStyles));
 
 var learnMarkup = fs.readFileSync(path.join(__dirname, '../study/pages/learn/learn.wxml'), 'utf8');
@@ -145,5 +147,20 @@ assert.ok(writeMarkup.indexOf('class="write-button listen-button trace-listen-bu
 assert.ok(/\.trace-mode-button\s*\{[^}]*border:\s*4rpx solid #39704d;[^}]*background:\s*#39704d;/m.test(writeStyles));
 assert.ok(/\.done-action\s*\{[^}]*border:\s*4rpx solid #39704D;[^}]*color:\s*#ffffff;[^}]*background:\s*#39704D;/m.test(writeStyles));
 assert.ok(/\.listen-button\s*\{[^}]*background:\s*transparent;/m.test(writeStyles));
+
+var migratedState = require('../utils/storage.js').createDefaultState();
+migratedState.chars['山'] = { char: '山', pinyin: 'shān', words: ['山头'], sentence: '那边有座山。', tip: '' };
+migratedState.progress['椅'] = { char: '椅', nextAt: 0 };
+migratedState.progress['山'] = { char: '山', nextAt: 0 };
+migratedState.progress['一'] = { char: '一', nextAt: 0 };
+storageMemory.mama_literacy_state_v1 = migratedState;
+review.onShow();
+assert.deepStrictEqual(review.data.dueCards.map(function (item) { return item.char; }), ['山', '一'], 'retired built-in characters must not appear in review');
+profile.onShow();
+assert.deepStrictEqual(profile.data.recordedItems.map(function (item) { return item.char; }), ['山'], 'archive lists only learned family input');
+var reviewLearn = loadPage('../study/pages/learn/learn.js');
+reviewLearn.onLoad({ mode: 'review' });
+assert.deepStrictEqual(reviewLearn.originalCards.map(function (item) { return item.char; }), ['山', '一']);
+assert.ok(storageMemory.mama_literacy_state_v1.progress['椅'], 'retired progress must be preserved');
 
 console.log('All page smoke tests passed.');

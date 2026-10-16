@@ -16,23 +16,10 @@ function getCard(state, course, key) {
   return state.chars[key] || course.getCardMap()[key] || null;
 }
 
-function firstUnfinishedLessonIndex(state, lessons) {
-  var lessonIndex;
-  for (lessonIndex = 0; lessonIndex < lessons.length; lessonIndex += 1) {
-    if (lessons[lessonIndex].cards.some(function (item) {
-      return !state.progress[item.char];
-    })) {
-      return lessonIndex;
-    }
-  }
-  return Math.max(lessons.length - 1, 0);
-}
-
 function ensureDailyCoursePlan(state, course, now) {
   var lessons = course.getLessons();
   var todayText = formatDate(now);
   var plan = state.coursePlan;
-  var nextIndex;
   var changed = false;
 
   if (!plan || typeof plan.date !== 'string' || typeof plan.lessonIndex !== 'number') {
@@ -41,15 +28,9 @@ function ensureDailyCoursePlan(state, course, now) {
     changed = true;
   }
   if (!plan.date) {
-    plan.lessonIndex = firstUnfinishedLessonIndex(state, lessons);
     plan.date = todayText;
     changed = true;
   } else if (plan.date !== todayText) {
-    nextIndex = Math.max(plan.lessonIndex, 0);
-    if (dateNumber(todayText) > dateNumber(plan.date)) {
-      nextIndex = Math.min(nextIndex + 1, Math.max(lessons.length - 1, 0));
-    }
-    plan.lessonIndex = nextIndex;
     plan.date = todayText;
     changed = true;
   }
@@ -81,18 +62,31 @@ function getCustomCards(state, course) {
   return customCards;
 }
 
+function getRecordedLearnedCards(state) {
+  var hidden = state.hiddenRecorded || {};
+  return Object.keys(state.chars).filter(function (key) {
+    var card = state.chars[key];
+    return !!state.progress[key] && !hidden[key] && !!card && typeof card.char === 'string' && card.char.length > 0;
+  }).map(function (key) {
+    return state.chars[key];
+  }).sort(function (left, right) {
+    var leftTime = left.lastInputAt || left.updatedAt || (state.progress[left.char] && state.progress[left.char].firstAt) || 0;
+    var rightTime = right.lastInputAt || right.updatedAt || (state.progress[right.char] && state.progress[right.char].firstAt) || 0;
+    return rightTime - leftTime || (left.char < right.char ? -1 : left.char > right.char ? 1 : 0);
+  });
+}
+
 function activateCustomCourse(state, now) {
   state.courseMode = 'custom';
   state.today.date = formatDate(now);
 }
 
 function activateDefaultCourse(state, course, now) {
-  var lessons = course.getLessons();
   var plan = state.coursePlan;
   var lessonIndex;
 
   if (!plan || typeof plan.lessonIndex !== 'number') {
-    lessonIndex = firstUnfinishedLessonIndex(state, lessons);
+    lessonIndex = 0;
   } else {
     lessonIndex = plan.lessonIndex;
   }
@@ -173,6 +167,7 @@ module.exports = {
   formatDate: formatDate,
   getCard: getCard,
   getCustomCards: getCustomCards,
+  getRecordedLearnedCards: getRecordedLearnedCards,
   getTodayCards: getTodayCards,
   ensureDailyCoursePlan: ensureDailyCoursePlan,
   setCourseLesson: setCourseLesson,

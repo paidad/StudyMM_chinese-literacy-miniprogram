@@ -99,6 +99,7 @@ Page({
         tip: source.tip || '',
         lesson: source.lesson || 0,
         updatedAt: source.updatedAt || 0,
+        lastInputAt: source.lastInputAt || 0,
         hasSupplement: source.hasSupplement === true
       } : {
         char: key,
@@ -108,11 +109,14 @@ Page({
         tip: '',
         lesson: 0,
         updatedAt: 0,
+        lastInputAt: 0,
         hasSupplement: false
       };
 
       card.updatedAt = Date.now();
+      card.lastInputAt = card.updatedAt;
       that.localState.chars[key] = card;
+      delete that.localState.hiddenRecorded[key];
       if (!seen[key]) {
         seen[key] = true;
         todayKeys.push(key);
@@ -297,6 +301,7 @@ Page({
       tip: this.data.editTip,
       lesson: source.lesson || 0,
       updatedAt: Date.now(),
+      lastInputAt: source.lastInputAt || 0,
       hasSupplement: true
     };
     if (this.saveState()) {
@@ -599,7 +604,7 @@ Page({
   },
 
   onProfileTap: function () {
-    this.goTo('/pages/profile/profile', '我的页面暂时打不开，请再试一次');
+    this.goTo('/pages/profile/profile', '已录页面暂时打不开，请再试一次');
   },
 
   goTo: function (url, message) {

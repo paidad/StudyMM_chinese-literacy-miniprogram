@@ -96,7 +96,7 @@ Page({
   },
 
   onProfileTap: function () {
-    this.goTo('/pages/profile/profile', '我的页面暂时打不开，请再试一次');
+    this.goTo('/pages/profile/profile', '已录页面暂时打不开，请再试一次');
   },
 
   goTo: function (url, message) {
