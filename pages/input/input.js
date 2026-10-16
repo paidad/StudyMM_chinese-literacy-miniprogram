@@ -493,23 +493,17 @@ Page({
       this.finishSaveFailure();
       return;
     }
-    this.replaceRecordingFile(result.tempFilePath);
+    this.saveRecordingFile(result.tempFilePath);
   },
 
-  replaceRecordingFile: function (tempFilePath) {
+  saveRecordingFile: function (tempFilePath) {
     var that = this;
     var key = this.recordingKey;
-    var oldPath = this.localState.recordings[key] || this.recordingPath;
-    this.fileSystem.unlink({
-      filePath: oldPath,
-      complete: function () {
-        that.fileSystem.saveFile({
-          tempFilePath: tempFilePath,
-          filePath: that.recordingPath,
-          success: function (result) { that.finishSaveSuccess(key, result.savedFilePath || that.recordingPath); },
-          fail: function () { that.finishSaveFailure(); }
-        });
-      }
+    this.fileSystem.saveFile({
+      tempFilePath: tempFilePath,
+      filePath: this.recordingPath,
+      success: function (result) { that.finishSaveSuccess(key, result.savedFilePath || that.recordingPath); },
+      fail: function () { that.finishSaveFailure(); }
     });
   },
 
@@ -557,8 +551,11 @@ Page({
       filePath: savedPath,
       success: function () {
         delete that.localState.recordings[key];
-        that.saveState();
-        that.setData({ hasRecording: false, recordingStatus: '录音已经删掉了', notice: '“' + key + '”的录音已经删除' });
+        if (that.saveState()) {
+          that.setData({ hasRecording: false, recordingStatus: '录音已经删掉了', notice: '“' + key + '”的录音已经删除' });
+        } else {
+          that.setData({ hasRecording: false, recordingStatus: '录音文件已删除，但记录没有保存好', notice: '录音文件已删除，但记录没有保存好，请再试一次' });
+        }
         that.refreshTodayItems();
       },
       fail: function () { that.setData({ notice: '录音没有删掉，请再试一次' }); }

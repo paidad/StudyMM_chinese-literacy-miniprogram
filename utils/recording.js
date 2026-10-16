@@ -10,8 +10,13 @@ function stableHash(text) {
   return (hash >>> 0).toString(16);
 }
 
+var recordingSequence = 0;
+
 function createRecordingFileName(word) {
-  return 'recording_' + stableHash(word) + '.mp3';
+  recordingSequence += 1;
+  return 'recording_' + stableHash(word) + '_' + Date.now().toString(36) +
+    '_' + recordingSequence.toString(36) +
+    '_' + Math.floor(Math.random() * 0x100000000).toString(36) + '.mp3';
 }
 
 function createRecorderOptions() {

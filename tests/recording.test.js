@@ -11,12 +11,12 @@ function runTest(name, testFunction) {
   }
 }
 
-runTest('same word always gets the same safe file name', function () {
+runTest('each recording gets a new safe file name', function () {
   var first = recordingModule.createRecordingFileName('一');
   var second = recordingModule.createRecordingFileName('一');
 
-  assert.strictEqual(first, second);
-  assert.ok(/^recording_[0-9a-f]+\.mp3$/.test(first));
+  assert.notStrictEqual(first, second);
+  assert.ok(/^recording_[0-9a-f]+_[0-9a-z]+_[0-9a-z]+_[0-9a-z]+\.mp3$/.test(first));
 });
 
 runTest('different words get different file names', function () {
